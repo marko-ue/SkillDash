@@ -7,7 +7,7 @@
 #include "SdCheatExtension.generated.h"
 
 /**
- * 
+ * Extends cheat manager with SkillDash-related console commands.
  */
 UCLASS()
 class SKILLDASHRUNTIME_API USdCheatExtension : public UMetaCheatManagerExtension
