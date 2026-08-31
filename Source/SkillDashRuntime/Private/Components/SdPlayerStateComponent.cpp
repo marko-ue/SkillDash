@@ -2,9 +2,14 @@
 
 
 #include "Components/SdPlayerStateComponent.h"
+#include "AbilitySystem/Abilities/SdDashAbility.h"
 
 // Bomber
 #include "GameFramework/BmrPlayerState.h"
+
+// UE
+#include "AbilitySystemComponent.h"
+#include "GameplayAbilitySpec.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerStateComponent)
 
@@ -29,15 +34,52 @@ ABmrPlayerState& USdPlayerStateComponent::GetPlayerStateChecked() const
 }
 
 /*********************************************************************************************
+ * Main methods
+ ********************************************************************************************* */
+
+void USdPlayerStateComponent::GiveDashAbility()
+{
+	if (!GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
+	const FGameplayAbilitySpec AbilitySpec(USdDashAbility::StaticClass());
+	DashAbilityHandle = ASC.GiveAbility(AbilitySpec);
+}
+
+void USdPlayerStateComponent::ClearDashAbility()
+{
+	if (!GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	if (!DashAbilityHandle.IsValid())
+	{
+		return;
+	}
+
+	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
+	ASC.ClearAbility(DashAbilityHandle);
+	DashAbilityHandle = FGameplayAbilitySpecHandle();
+}
+
+/*********************************************************************************************
  * Overrides
  ********************************************************************************************* */
 
+// Called when the game starts
 void USdPlayerStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	GiveDashAbility();
 }
 
+// Called when the component is unregistered, used to clean up resources
 void USdPlayerStateComponent::OnUnregister()
 {
+	ClearDashAbility();
 	Super::OnUnregister();
 }

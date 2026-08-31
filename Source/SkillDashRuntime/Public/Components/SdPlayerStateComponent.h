@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "GameplayAbilitySpecHandle.h"
 #include "Components/ActorComponent.h"
 
 #include "SDPlayerStateComponent.generated.h"
@@ -26,6 +27,23 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	class ABmrPlayerState* GetPlayerState() const;
 	ABmrPlayerState& GetPlayerStateChecked() const;
+	
+	/*********************************************************************************************
+	 * Main methods
+	 ********************************************************************************************* */
+public:
+	/** Grants the Dash ability to the owner's ASC. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	void GiveDashAbility();
+	
+	/** Removes the Dash ability from the owner's ASC. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	void ClearDashAbility();
+	
+protected:
+	/** Handle to the granted Dash ability, used for removal. */
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Transient, AdvancedDisplay, Category = "[SkillDash]", meta = (BlueprintProtected))
+	FGameplayAbilitySpecHandle DashAbilityHandle;
 
 	/*********************************************************************************************
 	 * Overrides
