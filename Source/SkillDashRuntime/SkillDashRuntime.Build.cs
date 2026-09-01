@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright (c) Marko Petric & Yevhenii Selivanov
 
 using UnrealBuildTool;
 
@@ -6,29 +6,25 @@ public class SkillDashRuntime : ModuleRules
 {
 	public SkillDashRuntime(ReadOnlyTargetRules Target) : base(Target)
 	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		CppCompileWarningSettings.NonInlinedGenCppWarningLevel = WarningLevel.Error;
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(
-			new string[]
+		PublicDependencyModuleNames.AddRange(new[]
 			{
-				"Core", 
-				"MetaCheatManager", // USdCheatExtension
-				"GameplayAbilities", "GameplayTags"
+				"Core"
+				, "GameplayAbilities", "GameplayTags" // Gameplay Ability System (GAS)
+				// Bomber modules
+				, "MetaCheatManager" // USdCheatExtension
+				, "DataAssetsLoader" // Created USdDataAsset
 			}
 		);
-		
-		PrivateDependencyModuleNames.AddRange(
-			new string[]
+
+		PrivateDependencyModuleNames.AddRange(new[]
 			{
-				"CoreUObject",
-				"Engine",
-				"Slate",
-				"SlateCore",
+				"CoreUObject", "Engine", "Slate", "SlateCore" // Core
 				// Bomber modules
-				"Bomber",
-				"MyUtils",
-				"DataAssetsLoader" // Created USdDataAsset
+				, "Bomber"
+				, "MyUtils"
 			}
 		);
 	}
