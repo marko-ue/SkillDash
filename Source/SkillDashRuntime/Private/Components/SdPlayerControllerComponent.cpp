@@ -5,6 +5,7 @@
 
 // Bomber
 #include "Controllers/BmrPlayerController.h"
+#include "Data/SdDataAsset.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerControllerComponent)
 
@@ -35,13 +36,27 @@ ABmrPlayerController& USdPlayerControllerComponent::GetPlayerControllerChecked()
 // Sets up the input context for SkillDash for the player controller
 void USdPlayerControllerComponent::SetupDashInputContext()
 {
-	//GetPlayerControllerChecked().SetupInputContexts()
+	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
+	if (!ensureMsgf(DashContext, TEXT("ASSERT: [%i] %hs:\n'DashContext' is not valid!"), __LINE__, __FUNCTION__))
+	{
+		return;
+	}
+
+	const TArray<UBmrInputMappingContext*> Contexts = {DashContext};
+	GetPlayerControllerChecked().SetupInputContexts(Contexts);
 }
 
 // Removes the input context for SkillDash from the player controller
 void USdPlayerControllerComponent::RemoveDashInputContext()
 {
-	//GetPlayerControllerChecked().RemoveInputContexts()
+	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
+	if (!ensureMsgf(DashContext, TEXT("ASSERT: [%i] %hs:\n'DashContext' is not valid!"), __LINE__, __FUNCTION__))
+	{
+		return;
+	}
+
+	const TArray<UBmrInputMappingContext*> Contexts = {DashContext};
+	GetPlayerControllerChecked().RemoveInputContexts(Contexts);
 }
 
 /*********************************************************************************************

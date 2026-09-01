@@ -27,7 +27,8 @@ public class SkillDashRuntime : ModuleRules
 				"Slate",
 				"SlateCore",
 				// Bomber modules
-				"Bomber"
+				"Bomber",
+				"DataAssetsLoader" // Created USdDataAsset
 			}
 		);
 	}
