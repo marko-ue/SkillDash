@@ -14,7 +14,7 @@ public class SkillDashRuntime : ModuleRules
 			{
 				"Core", 
 				"MetaCheatManager", // USdCheatExtension
-				"GameplayAbilities", 
+				"GameplayAbilities", "GameplayTags"
 			}
 		);
 			
