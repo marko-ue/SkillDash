@@ -40,6 +40,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ClearDashAbility();
 	
+	/** Broadcasts the dash ability activation event when input is started. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	void OnDashInputStarted();
+	
 protected:
 	/** Handle to the granted Dash ability, used for removal. */
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Transient, AdvancedDisplay, Category = "[SkillDash]", meta = (BlueprintProtected))

@@ -17,7 +17,6 @@ public class SkillDashRuntime : ModuleRules
 				"GameplayAbilities", "GameplayTags"
 			}
 		);
-			
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
@@ -28,6 +27,7 @@ public class SkillDashRuntime : ModuleRules
 				"SlateCore",
 				// Bomber modules
 				"Bomber",
+				"MyUtils",
 				"DataAssetsLoader" // Created USdDataAsset
 			}
 		);

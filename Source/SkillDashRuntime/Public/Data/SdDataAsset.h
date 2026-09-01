@@ -30,4 +30,17 @@ protected:
 	/** Input context for the dash ability. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	TObjectPtr<class UBmrInputMappingContext> DashInputContext = nullptr;
+
+	/*********************************************************************************************
+	 * Gameplay Ability System (GAS)
+	 ********************************************************************************************* */
+public:
+	/** Returns the dash ability class. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
+	FORCEINLINE TSubclassOf<class UGameplayAbility> GetDashAbilityClass() const { return DashAbilityClass; }
+
+protected:
+	/** The dash ability class to grant to the player. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
+	TSubclassOf<UGameplayAbility> DashAbilityClass = nullptr;
 };

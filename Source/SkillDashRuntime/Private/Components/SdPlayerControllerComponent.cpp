@@ -3,9 +3,11 @@
 
 #include "Components/SdPlayerControllerComponent.h"
 
+// Sd
+#include "Data/SdDataAsset.h"
+
 // Bomber
 #include "Controllers/BmrPlayerController.h"
-#include "Data/SdDataAsset.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerControllerComponent)
 

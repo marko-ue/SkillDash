@@ -2,10 +2,14 @@
 
 
 #include "Components/SdPlayerStateComponent.h"
-#include "AbilitySystem/Abilities/SdDashAbility.h"
+
+// Sd
+#include "Data/SdDataAsset.h"
+#include "SdGameplayTags.h"
 
 // Bomber
 #include "GameFramework/BmrPlayerState.h"
+#include "Subsystems/GlobalMessageSubsystem.h"
 
 // UE
 #include "AbilitySystemComponent.h"
@@ -37,6 +41,7 @@ ABmrPlayerState& USdPlayerStateComponent::GetPlayerStateChecked() const
  * Main methods
  ********************************************************************************************* */
 
+// Gives the dash ability to the ASC
 void USdPlayerStateComponent::GiveDashAbility()
 {
 	if (!GetOwner()->HasAuthority())
@@ -45,10 +50,11 @@ void USdPlayerStateComponent::GiveDashAbility()
 	}
 
 	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-	const FGameplayAbilitySpec AbilitySpec(USdDashAbility::StaticClass());
+	const FGameplayAbilitySpec AbilitySpec(USdDataAsset::Get().GetDashAbilityClass());
 	DashAbilityHandle = ASC.GiveAbility(AbilitySpec);
 }
 
+// Clears the dash ability from the ASC
 void USdPlayerStateComponent::ClearDashAbility()
 {
 	if (!GetOwner()->HasAuthority())
@@ -64,6 +70,15 @@ void USdPlayerStateComponent::ClearDashAbility()
 	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 	ASC.ClearAbility(DashAbilityHandle);
 	DashAbilityHandle = FGameplayAbilitySpecHandle();
+}
+
+// Broadcasts the dash ability activation event when input is started
+void USdPlayerStateComponent::OnDashInputStarted()
+{
+	FGameplayEventData EventData;
+	EventData.EventTag = SdGameplayTags::Event::DashActivated;
+	EventData.Instigator = GetPlayerStateChecked().GetPawn();
+	UGlobalMessageSubsystem::BroadcastGlobalMessage(EventData);
 }
 
 /*********************************************************************************************
