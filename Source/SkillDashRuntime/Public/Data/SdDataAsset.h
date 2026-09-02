@@ -42,13 +42,21 @@ public:
 	/** Returns the dash impulse strength. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE float GetDashImpulseStrength() const { return DashImpulseStrength; }
+	
+	/** Returns the dash ability coldown duration. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
+	FORCEINLINE float GetDashCooldownDuration() const { return DashCooldownDuration; }
 
 protected:
 	/** The dash ability class to grant to the player. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	TSubclassOf<UGameplayAbility> DashAbilityClass = nullptr;
 	
-	/** How strong the dash impulse should be (how far the player gets launched) */
+	/** How strong the dash impulse should be (how far the player gets launched). */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	float DashImpulseStrength = 3000.f;
+	
+	/** How long the cooldown of the dash ability lasts. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
+	float DashCooldownDuration = 5.f;
 };

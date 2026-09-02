@@ -11,6 +11,7 @@
 #include "Components/BmrMoverComponent.h"
 
 // UE
+#include "SdGameplayTags.h"
 #include "DefaultMovementSet/InstantMovementEffects/BasicInstantMovementEffects.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
@@ -32,14 +33,31 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		return;
 	}
 	
+	// The player will dash in the direction of the player's forward vector
 	const FVector DashDirection = AvatarPawn->GetActorForwardVector();
+	
+	// Impulse strength retrieved from data asset, dictates how far the player gets launched
 	const float ImpulseStrength = USdDataAsset::Get().GetDashImpulseStrength();
 
+	// Apply the velocity
 	const TSharedPtr<FApplyVelocityEffect> DashEffect = MakeShared<FApplyVelocityEffect>();
 	DashEffect->VelocityToApply = DashDirection * ImpulseStrength;
 	DashEffect->bAdditiveVelocity = false;
 
+	// Apply the dash movement effect
 	MoverComp->QueueInstantMovementEffect(DashEffect);
 
+	// Retrieves the cooldown GE set on this ability's CDO
+	const UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
+	if (!ensureMsgf(CooldownGE, TEXT("ASSERT: [%i] %hs:\n'CooldownGE' is null!"), __LINE__, __FUNCTION__))
+	{
+		return;
+	}
+
+	// Applies the cooldown GE with a SetByCaller. The cooldown duration (magnitude) is retrieved from this ability's data asset
+	const FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(CooldownGE->GetClass(), GetAbilityLevel());
+	SpecHandle.Data->SetSetByCallerMagnitude(SdGameplayTags::SetByCaller::DashCooldownDuration, USdDataAsset::Get().GetDashCooldownDuration());
+	ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, SpecHandle);
+	
 	K2_EndAbility();
 }
