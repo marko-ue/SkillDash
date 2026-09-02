@@ -38,9 +38,17 @@ public:
 	/** Returns the dash ability class. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE TSubclassOf<class UGameplayAbility> GetDashAbilityClass() const { return DashAbilityClass; }
+	
+	/** Returns the dash impulse strength. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
+	FORCEINLINE float GetDashImpulseStrength() const { return DashImpulseStrength; }
 
 protected:
 	/** The dash ability class to grant to the player. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	TSubclassOf<UGameplayAbility> DashAbilityClass = nullptr;
+	
+	/** How strong the dash impulse should be (how far the player gets launched) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
+	float DashImpulseStrength = 3000.f;
 };

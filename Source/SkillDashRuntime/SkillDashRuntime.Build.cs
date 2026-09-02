@@ -22,6 +22,7 @@ public class SkillDashRuntime : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new[]
 			{
 				"CoreUObject", "Engine", "Slate", "SlateCore" // Core
+				, "Mover" // Used for dash impulse
 				// Bomber modules
 				, "Bomber"
 				, "MyUtils"
