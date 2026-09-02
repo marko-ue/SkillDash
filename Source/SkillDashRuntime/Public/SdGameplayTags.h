@@ -21,4 +21,9 @@ namespace SdGameplayTags
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashCooldownDuration);
 	} // namespace SetByCaller
+	
+	namespace GameplayCue
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivation)
+	} //namespace GameplayCue
 } // namespace SdGameplayTags

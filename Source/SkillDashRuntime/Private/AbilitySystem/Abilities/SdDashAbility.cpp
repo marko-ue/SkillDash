@@ -5,13 +5,14 @@
 
 // Sd
 #include "Data/SdDataAsset.h"
+#include "SdGameplayTags.h"
 
 // Bomber
 #include "Actors/BmrPawn.h"
 #include "Components/BmrMoverComponent.h"
 
 // UE
-#include "SdGameplayTags.h"
+#include "GameplayCueManager.h"
 #include "DefaultMovementSet/InstantMovementEffects/BasicInstantMovementEffects.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
@@ -58,6 +59,10 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	const FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(CooldownGE->GetClass(), GetAbilityLevel());
 	SpecHandle.Data->SetSetByCallerMagnitude(SdGameplayTags::SetByCaller::DashCooldownDuration, USdDataAsset::Get().GetDashCooldownDuration());
 	ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, SpecHandle);
+	
+	FGameplayCueParameters CueParams;
+	CueParams.Location = AvatarPawn->GetActorLocation();
+	UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
 	
 	K2_EndAbility();
 }
