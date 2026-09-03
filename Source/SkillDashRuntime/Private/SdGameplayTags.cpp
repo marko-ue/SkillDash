@@ -4,6 +4,12 @@
 
 namespace SdGameplayTags
 {
+	namespace UI
+	{
+		
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_CooldownBar, "UI.Widget.SkillDash.CooldownBar", "Widget tag for the dash ability cooldown bar widget");
+	} // namespace UI
+	
 	namespace Event
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashActivated, "Event.SkillDash.DashActivated", "Event that attempts to activate the dash ability");

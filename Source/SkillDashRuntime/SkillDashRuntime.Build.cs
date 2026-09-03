@@ -12,6 +12,7 @@ public class SkillDashRuntime : ModuleRules
 		PublicDependencyModuleNames.AddRange(new[]
 			{
 				"Core"
+				, "UMG" // UUserWidget creation
 				, "GameplayAbilities", "GameplayTags" // Gameplay Ability System (GAS)
 				// Bomber modules
 				, "MetaCheatManager" // USdCheatExtension

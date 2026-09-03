@@ -7,6 +7,11 @@
 
 namespace SdGameplayTags
 {
+	namespace UI
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Widget_CooldownBar);
+	} // namespace UI
+	
 	namespace Event
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivated);
