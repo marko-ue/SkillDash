@@ -43,7 +43,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE float GetDashImpulseStrength() const { return DashImpulseStrength; }
 	
-	/** Returns the dash ability coldown duration. */
+	/** Returns the dash ability cooldown duration. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE float GetDashCooldownDuration() const { return DashCooldownDuration; }
 

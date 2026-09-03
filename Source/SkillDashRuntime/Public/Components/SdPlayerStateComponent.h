@@ -36,9 +36,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void GiveDashAbility();
 	
-	/** Removes the Dash ability from the owner's ASC. */
+	/** Clears the Dash ability from the owner's ASC. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ClearDashAbility();
+	
+	/** Returns the Dash ability spec handle. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	FGameplayAbilitySpecHandle GetDashAbilityHandle() const; 
 	
 	/** Broadcasts the dash ability activation event when input is started. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")

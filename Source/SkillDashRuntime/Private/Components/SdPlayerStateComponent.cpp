@@ -41,7 +41,7 @@ ABmrPlayerState& USdPlayerStateComponent::GetPlayerStateChecked() const
  * Main methods
  ********************************************************************************************* */
 
-// Gives the dash ability to the ASC
+// Gives the dash ability to the owner's ASC
 void USdPlayerStateComponent::GiveDashAbility()
 {
 	if (!GetOwner()->HasAuthority())
@@ -54,7 +54,7 @@ void USdPlayerStateComponent::GiveDashAbility()
 	DashAbilityHandle = ASC.GiveAbility(AbilitySpec);
 }
 
-// Clears the dash ability from the ASC
+// Clears the dash ability from the owner's ASC
 void USdPlayerStateComponent::ClearDashAbility()
 {
 	if (!GetOwner()->HasAuthority())
@@ -70,6 +70,12 @@ void USdPlayerStateComponent::ClearDashAbility()
 	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 	ASC.ClearAbility(DashAbilityHandle);
 	DashAbilityHandle = FGameplayAbilitySpecHandle();
+}
+
+// Returns the Dash ability spec handle
+FGameplayAbilitySpecHandle USdPlayerStateComponent::GetDashAbilityHandle() const
+{
+	return DashAbilityHandle;
 }
 
 // Broadcasts the dash ability activation event when input is started
