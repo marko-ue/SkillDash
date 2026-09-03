@@ -1,6 +1,6 @@
 // Copyright (c) Marko Petric & Yevhenii Selivanov
 
-#include "SdCooldownBarWidget.h"
+#include "Widgets/SdCooldownBarWidget.h"
 
 // Sd
 #include "SdGameplayTags.h"
@@ -17,7 +17,6 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdCooldownBarWidget)
 
-// Called after the underlying slate widget is constructed
 // Called after the underlying slate widget is constructed
 void USdCooldownBarWidget::NativeConstruct()
 {
