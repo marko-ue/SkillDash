@@ -59,7 +59,7 @@ void USdCooldownBarWidget::OnCooldownTagChanged(const FGameplayTag Tag, int32 Ne
 	{
 		// Cooldown ended - hide widget
 		SetVisibility(ESlateVisibility::Collapsed);
-		CooldownProgressBar->SetPercent(0.f);
+		CooldownProgressBar->SetPercent(1.f);
 	}
 }
 
@@ -118,7 +118,8 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
     AbilitySpec->Ability->GetCooldownTimeRemainingAndDuration(
        DashAbilityHandle, ASC->AbilityActorInfo.Get(), TimeRemaining, Duration);
 	
-	if (TimeRemaining <= 0.f || Duration <= 0.f)
+	// Stop ticking if the ability is off cooldown
+	if (TimeRemaining <= 0.f)
 	{
 		return;
 	}
