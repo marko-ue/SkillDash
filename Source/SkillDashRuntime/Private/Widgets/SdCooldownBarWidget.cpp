@@ -17,6 +17,10 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdCooldownBarWidget)
 
+/*********************************************************************************************
+ * Overrides
+ ********************************************************************************************* */
+
 // Called after the underlying slate widget is constructed
 void USdCooldownBarWidget::NativeConstruct()
 {

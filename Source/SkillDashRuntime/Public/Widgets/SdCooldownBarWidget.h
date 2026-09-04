@@ -26,7 +26,7 @@ protected:
 	TObjectPtr<UProgressBar> CooldownProgressBar = nullptr;
 
 	/*********************************************************************************************
-	 * Protected functions
+	 * Overrides
 	 ********************************************************************************************* */
 protected:
 	/** Called after the underlying slate widget is constructed. */
