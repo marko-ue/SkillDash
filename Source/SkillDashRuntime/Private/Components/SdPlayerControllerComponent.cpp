@@ -7,7 +7,10 @@
 #include "Data/SdDataAsset.h"
 
 // Bomber
+#include "GfpmUtils.h"
 #include "Controllers/BmrPlayerController.h"
+#include "DataAssets/BmrInputMappingContext.h"
+#include "MyUtilsLibraries/InputUtilsLibrary.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerControllerComponent)
 
@@ -75,6 +78,17 @@ void USdPlayerControllerComponent::BeginPlay()
 // Clears all transient data created by this component
 void USdPlayerControllerComponent::OnUnregister()
 {
-	RemoveDashInputContext();
+	ABmrPlayerController* MyPC = GetPlayerController();
+
+	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
+	if (MyPC && DashContext)
+	{
+		TArray<UInputAction*> ContextInputActions;
+		UInputUtilsLibrary::GetAllActionsInContext(MyPC, DashContext, EInputActionInContextState::Any, /*out*/ ContextInputActions);
+		UInputUtilsLibrary::UnbindInputActionsInContext(MyPC, DashContext);
+		UGfpmUtils::UnloadAssets(ContextInputActions);
+		MyPC->RemoveInputContexts({DashContext});
+	}
+
 	Super::OnUnregister();
 }

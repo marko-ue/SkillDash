@@ -83,7 +83,7 @@ void USdPlayerStateComponent::OnDashInputStarted()
 {
 	FGameplayEventData EventData;
 	EventData.EventTag = SdGameplayTags::Event::DashActivated;
-	EventData.Instigator = GetPlayerStateChecked().GetPawn();
+	EventData.Instigator = GetOwner();
 	UGlobalMessageSubsystem::BroadcastGlobalMessage(EventData);
 }
 

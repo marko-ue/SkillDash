@@ -80,11 +80,11 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
     }
 
 	// Get the player state component
-    const USdPlayerStateComponent* PlayerStateComponent = USdUtils::GetPlayerStateComponent();
-    if (!ensureMsgf(PlayerStateComponent, TEXT("ASSERT: [%i] %hs:\n'PlayerStateComponent' is not valid!"), __LINE__, __FUNCTION__))
-    {
-       return;
-    }
+	const USdPlayerStateComponent* PlayerStateComponent = USdUtils::GetPlayerStateComponent();
+	if (!PlayerStateComponent)
+	{
+		return;
+	}
 
 	// Get the player state
     const ABmrPlayerState* PlayerState = PlayerStateComponent->GetPlayerState();

@@ -15,6 +15,8 @@ public class SkillDashRuntime : ModuleRules
 				, "UMG" // UUserWidget creation
 				, "GameplayAbilities", "GameplayTags" // Gameplay Ability System (GAS)
 				// Bomber modules
+				, "Bomber"
+				, "GameFeaturePluginsManager"
 				, "MetaCheatManager" // USdCheatExtension
 				, "DataAssetsLoader" // Created USdDataAsset
 			}
@@ -25,7 +27,6 @@ public class SkillDashRuntime : ModuleRules
 				"CoreUObject", "Engine", "Slate", "SlateCore" // Core
 				, "Mover" // Used for dash impulse
 				// Bomber modules
-				, "Bomber"
 				, "MyUtils"
 			}
 		);
