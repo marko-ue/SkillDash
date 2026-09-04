@@ -101,6 +101,13 @@ void USdPlayerStateComponent::BeginPlay()
 // Called when the component is unregistered, used to clean up resources
 void USdPlayerStateComponent::OnUnregister()
 {
+	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
+    
+	// Clear dash cooldown so it doesn't carry over into the next game when restarting
+	FGameplayTagContainer CooldownTags;
+	CooldownTags.AddTag(SdGameplayTags::Cooldown::DashCooldown);
+	ASC->RemoveActiveEffectsWithTags(CooldownTags);
+	
 	ClearDashAbility();
 	Super::OnUnregister();
 }
