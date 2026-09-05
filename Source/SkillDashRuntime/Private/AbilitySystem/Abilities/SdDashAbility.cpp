@@ -12,8 +12,10 @@
 #include "Components/BmrMoverComponent.h"
 
 // UE
+#include "AbilitySystemComponent.h"
 #include "GameplayCueManager.h"
 #include "DefaultMovementSet/InstantMovementEffects/BasicInstantMovementEffects.h"
+#include "MyUtilsLibraries/MultiplayerUtilsLibrary.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
 
@@ -33,6 +35,8 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	{
 		return;
 	}
+	
+	CommitAbility(Handle, ActorInfo, ActivationInfo);
 	
 	// The player will dash in the direction of the player's forward vector
 	const FVector DashDirection = AvatarPawn->GetActorForwardVector();
@@ -54,15 +58,43 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	{
 		return;
 	}
-
-	// Applies the cooldown GE with a SetByCaller. The cooldown duration (magnitude) is retrieved from this ability's data asset
-	const FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(CooldownGE->GetClass(), GetAbilityLevel());
-	SpecHandle.Data->SetSetByCallerMagnitude(SdGameplayTags::SetByCaller::DashCooldownDuration, USdDataAsset::Get().GetDashCooldownDuration());
-	ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, SpecHandle);
 	
+	// Execute the non replicated gameplay cue for the dash
 	FGameplayCueParameters CueParams;
 	CueParams.Location = AvatarPawn->GetActorLocation();
 	UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
 	
 	K2_EndAbility();
+}
+
+// Is overridden to apply cooldown with set by caller tag for dash cooldown duration
+void USdDashAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
+{
+	const UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
+	if (!CooldownGE || !ActorInfo)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+	if (!ASC || !ASC->HasAuthorityOrPredictionKey(&ActivationInfo))
+	{
+		return;
+	}
+
+	// Get the cooldown duration from this ability's data asset
+	float CooldownDuration = USdDataAsset::Get().GetDashCooldownDuration();
+    
+	// Compensate for replication delay on server for non-local clients
+	if (ActivationInfo.ActivationMode == EGameplayAbilityActivationMode::Authority && !ActorInfo->IsLocallyControlled())
+	{
+		const APawn* AvatarPawn = Cast<APawn>(ASC->GetAvatarActor());
+		const float PlayerPing = UMultiplayerUtilsLibrary::GetPlayerPingSeconds(AvatarPawn);
+		CooldownDuration = FMath::Max(0.f, CooldownDuration - PlayerPing);
+	}
+
+	// Applies the cooldown GE with a SetByCaller
+	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(CooldownGE->GetClass(), GetAbilityLevel(), ASC->MakeEffectContext());
+	SpecHandle.Data->SetSetByCallerMagnitude(SdGameplayTags::SetByCaller::DashCooldownDuration, CooldownDuration);
+	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get(), ASC->GetPredictionKeyForNewAction());
 }

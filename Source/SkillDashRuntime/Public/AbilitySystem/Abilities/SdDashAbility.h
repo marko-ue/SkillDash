@@ -21,4 +21,7 @@ class SKILLDASHRUNTIME_API USdDashAbility : public UGameplayAbility
 protected:
 	/** Actually activate ability, do not call this directly. */
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	
+	/** Is overridden to apply cooldown with set by caller tag for dash cooldown duration. */
+	void ApplyCooldown(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, FGameplayAbilityActivationInfo ActivationInfo) const;
 };
