@@ -24,6 +24,14 @@ protected:
 	/** Progress bar for showing the remaining cooldown of the Dash ability. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Transient, Category = "[SkillDash]", meta = (BlueprintProtected, BindWidget))
 	TObjectPtr<UProgressBar> CooldownProgressBar = nullptr;
+	
+	/** Tracks the world time for when the Dash ability cooldown started. */
+	UPROPERTY(Transient)
+	float CooldownStartTime = 0.f;
+
+	/** Holds the cooldown duration of the Dash ability. */
+	UPROPERTY(Transient)
+	float CooldownDuration = 0.f;
 
 	/*********************************************************************************************
 	 * Overrides
