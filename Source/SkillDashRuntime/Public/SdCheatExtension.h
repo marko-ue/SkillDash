@@ -1,4 +1,4 @@
-// Copyright (c) Yevhenii Selivanov
+// Copyright (c) Marko Petric & Yevhenii Selivanov
 
 #pragma once
 
@@ -13,4 +13,11 @@ UCLASS()
 class SKILLDASHRUNTIME_API USdCheatExtension : public UMetaCheatManagerExtension
 {
 	GENERATED_BODY()
+	
+public:
+	/** Override the impulse strength of the dash ability, where 0 is minimum */
+	static TAutoConsoleVariable<float> CVarDashImpulseStrength;
+	
+	/** Override the cooldown of the dash ability, where 0.01 is the minimum (automatically clamped to 0.01 if 0 is put in) */
+	static TAutoConsoleVariable<float> CVarDashCooldownDuration;
 };

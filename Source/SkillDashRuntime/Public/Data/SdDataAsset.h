@@ -41,11 +41,11 @@ public:
 	
 	/** Returns the dash impulse strength. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
-	FORCEINLINE float GetDashImpulseStrength() const { return DashImpulseStrength; }
+	float GetDashImpulseStrength() const;
 	
 	/** Returns the dash ability cooldown duration. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
-	FORCEINLINE float GetDashCooldownDuration() const { return DashCooldownDuration; }
+	float GetDashCooldownDuration() const;
 
 protected:
 	/** The dash ability class to grant to the player. */
