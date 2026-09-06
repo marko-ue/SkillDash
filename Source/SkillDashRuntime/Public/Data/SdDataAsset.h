@@ -54,9 +54,9 @@ protected:
 	
 	/** How strong the dash impulse should be (how far the player gets launched). */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
-	float DashImpulseStrength = 3000.f;
+	float DashImpulseStrength = 6000.f;
 	
 	/** How long the cooldown of the dash ability lasts. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
-	float DashCooldownDuration = 5.f;
+	float DashCooldownDuration = 3.5f;
 };
