@@ -33,10 +33,10 @@ public:
 	 ********************************************************************************************* */
 protected:
 	/** Sets up the input context for SkillDash for the player controller. */
-	void SetupDashInputContext();
+	void SetupDashInputContext() const;
 	
 	/** Removes the input context for SkillDash from the player controller. */
-	void RemoveDashInputContext();
+	void RemoveDashInputContext() const;
 
 	/*********************************************************************************************
 	 * Overrides
@@ -47,4 +47,12 @@ protected:
 
 	/** Clears all transient data created by this component */
 	virtual void OnUnregister() override;
+	
+	/*********************************************************************************************
+	 * Events
+	 ********************************************************************************************* */
+protected:
+	/** Called when the Sd data asset is loaded and available. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[SkillDash]", meta = (BlueprintProtected))
+	void OnDataAssetLoaded(const class USdDataAsset* DataAsset);
 };

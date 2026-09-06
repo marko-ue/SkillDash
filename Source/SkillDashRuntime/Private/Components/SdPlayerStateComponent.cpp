@@ -10,6 +10,7 @@
 // Bomber
 #include "GameFramework/BmrPlayerState.h"
 #include "Subsystems/GlobalMessageSubsystem.h"
+#include "DalSubsystem.h"
 
 // UE
 #include "AbilitySystemComponent.h"
@@ -95,7 +96,8 @@ void USdPlayerStateComponent::OnDashInputStarted()
 void USdPlayerStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	GiveDashAbility();
+	
+	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, &ThisClass::OnDataAssetLoaded);
 }
 
 // Called when the component is unregistered, used to clean up resources
@@ -110,4 +112,12 @@ void USdPlayerStateComponent::OnUnregister()
 	
 	ClearDashAbility();
 	Super::OnUnregister();
+}
+
+/*********************************************************************************************
+ * Events
+ ********************************************************************************************* */
+void USdPlayerStateComponent::OnDataAssetLoaded_Implementation(const class USdDataAsset* DataAsset)
+{
+	GiveDashAbility();
 }

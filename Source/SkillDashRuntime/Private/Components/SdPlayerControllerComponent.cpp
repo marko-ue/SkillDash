@@ -7,10 +7,12 @@
 #include "Data/SdDataAsset.h"
 
 // Bomber
+#include "DalSubsystem.h"
 #include "GfpmUtils.h"
 #include "Controllers/BmrPlayerController.h"
 #include "DataAssets/BmrInputMappingContext.h"
 #include "MyUtilsLibraries/InputUtilsLibrary.h"
+#include "Subsystems/GlobalMessageSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerControllerComponent)
 
@@ -39,7 +41,7 @@ ABmrPlayerController& USdPlayerControllerComponent::GetPlayerControllerChecked()
  ********************************************************************************************* */
 
 // Sets up the input context for SkillDash for the player controller
-void USdPlayerControllerComponent::SetupDashInputContext()
+void USdPlayerControllerComponent::SetupDashInputContext() const
 {
 	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
 	if (!ensureMsgf(DashContext, TEXT("ASSERT: [%i] %hs:\n'DashContext' is not valid!"), __LINE__, __FUNCTION__))
@@ -52,7 +54,7 @@ void USdPlayerControllerComponent::SetupDashInputContext()
 }
 
 // Removes the input context for SkillDash from the player controller
-void USdPlayerControllerComponent::RemoveDashInputContext()
+void USdPlayerControllerComponent::RemoveDashInputContext() const
 {
 	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
 	if (!ensureMsgf(DashContext, TEXT("ASSERT: [%i] %hs:\n'DashContext' is not valid!"), __LINE__, __FUNCTION__))
@@ -72,7 +74,8 @@ void USdPlayerControllerComponent::RemoveDashInputContext()
 void USdPlayerControllerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	SetupDashInputContext();
+	
+	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, &ThisClass::OnDataAssetLoaded);
 }
 
 // Clears all transient data created by this component
@@ -89,6 +92,18 @@ void USdPlayerControllerComponent::OnUnregister()
 		UGfpmUtils::UnloadAssets(ContextInputActions);
 		MyPC->RemoveInputContexts({DashContext});
 	}
+	
+	UGlobalMessageSubsystem::StopListeningForAllGlobalMessages(this);
 
 	Super::OnUnregister();
+}
+
+/*********************************************************************************************
+ * Events
+ ********************************************************************************************* */
+
+// Called when the NMM data asset is loaded and available
+void USdPlayerControllerComponent::OnDataAssetLoaded_Implementation(const class USdDataAsset* DataAsset)
+{
+	SetupDashInputContext();
 }
