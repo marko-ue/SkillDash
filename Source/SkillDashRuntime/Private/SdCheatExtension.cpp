@@ -8,6 +8,10 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdCheatExtension)
 
+/*********************************************************************************************
+ * Main methods
+ ********************************************************************************************* */
+
 // Disables and enables the SkillDash GFP, effectively resetting it
 void USdCheatExtension::ResetSkillDash()
 {
@@ -15,6 +19,10 @@ void USdCheatExtension::ResetSkillDash()
 	UGfpmUtils::SetGameFeaturePluginsActive(false, SkillDash);
 	UGfpmUtils::SetGameFeaturePluginsActive(true, SkillDash);
 }
+
+/*********************************************************************************************
+ * CVars
+ ********************************************************************************************* */
 
 // Override the impulse strength of the dash ability
 TAutoConsoleVariable<float> USdCheatExtension::CVarDashImpulseStrength(

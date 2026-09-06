@@ -14,11 +14,18 @@ class SKILLDASHRUNTIME_API USdCheatExtension : public UMetaCheatManagerExtension
 {
 	GENERATED_BODY()
 	
+	/*********************************************************************************************
+	 * Main methods
+	 ********************************************************************************************* */
 public:
 	/** Disables and enables the SkillDash GFP, effectively resetting it. */
 	UFUNCTION(Exec, meta = (CheatName = "ResetSkillDash"))
 	void ResetSkillDash();
 	
+	/*********************************************************************************************
+	 * CVars
+	 ********************************************************************************************* */
+public:
 	/** Override the impulse strength of the dash ability, where 0 is minimum. */
 	static TAutoConsoleVariable<float> CVarDashImpulseStrength;
 	
