@@ -108,7 +108,7 @@ void USdPlayerStateComponent::OnUnregister()
 	// Clear dash cooldown so it doesn't carry over into the next game when restarting
 	FGameplayTagContainer CooldownTags;
 	CooldownTags.AddTag(SdGameplayTags::Cooldown::DashCooldown);
-	ASC->RemoveActiveEffectsWithTags(CooldownTags);
+	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
 	
 	ClearDashAbility();
 	Super::OnUnregister();
