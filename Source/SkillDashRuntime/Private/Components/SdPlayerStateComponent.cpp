@@ -49,10 +49,14 @@ void USdPlayerStateComponent::GiveDashAbility()
 	{
 		return;
 	}
-
-	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-	const FGameplayAbilitySpec AbilitySpec(USdDataAsset::Get().GetDashAbilityClass());
-	DashAbilityHandle = ASC.GiveAbility(AbilitySpec);
+	
+	// Lambda that gives the Dash ability when the data asset becomes valid
+	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, [this](const USdDataAsset& DA)
+	{
+		UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
+		const FGameplayAbilitySpec AbilitySpec(DA.GetDashAbilityClass());
+		DashAbilityHandle = ASC.GiveAbility(AbilitySpec);
+	});
 }
 
 // Clears the dash ability from the owner's ASC
@@ -97,7 +101,7 @@ void USdPlayerStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, &ThisClass::OnDataAssetLoaded);
+	GiveDashAbility();
 }
 
 // Called when the component is unregistered, used to clean up resources
@@ -112,12 +116,4 @@ void USdPlayerStateComponent::OnUnregister()
 	
 	ClearDashAbility();
 	Super::OnUnregister();
-}
-
-/*********************************************************************************************
- * Events
- ********************************************************************************************* */
-void USdPlayerStateComponent::OnDataAssetLoaded_Implementation(const class USdDataAsset* DataAsset)
-{
-	GiveDashAbility();
 }

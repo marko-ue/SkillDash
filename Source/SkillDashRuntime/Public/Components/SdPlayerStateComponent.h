@@ -62,12 +62,4 @@ protected:
 
 	/** Clears all transient data created by this component. */
 	virtual void OnUnregister() override;
-	
-	/*********************************************************************************************
-	 * Events
-	 ********************************************************************************************* */
-protected:
-	/** Called when the Sd data asset is loaded and available. */
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[SkillDash]", meta = (BlueprintProtected))
-	void OnDataAssetLoaded(const class USdDataAsset* DataAsset);
 };

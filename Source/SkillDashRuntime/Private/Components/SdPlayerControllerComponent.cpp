@@ -1,18 +1,18 @@
 // Copyright (c) Marko Petric & Yevhenii Selivanov
 
-
 #include "Components/SdPlayerControllerComponent.h"
 
 // Sd
 #include "Data/SdDataAsset.h"
 
 // Bomber
-#include "DalSubsystem.h"
-#include "GfpmUtils.h"
 #include "Controllers/BmrPlayerController.h"
+#include "DalSubsystem.h"
 #include "DataAssets/BmrInputMappingContext.h"
+#include "GfpmUtils.h"
 #include "MyUtilsLibraries/InputUtilsLibrary.h"
 #include "Subsystems/GlobalMessageSubsystem.h"
+#include "TimerManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerControllerComponent)
 
@@ -43,14 +43,12 @@ ABmrPlayerController& USdPlayerControllerComponent::GetPlayerControllerChecked()
 // Sets up the input context for SkillDash for the player controller
 void USdPlayerControllerComponent::SetupDashInputContext() const
 {
-	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
-	if (!ensureMsgf(DashContext, TEXT("ASSERT: [%i] %hs:\n'DashContext' is not valid!"), __LINE__, __FUNCTION__))
+	// Lambda that sets up input contexts when the data asset becomes valid
+	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, [this](const USdDataAsset& DA)
 	{
-		return;
-	}
-
-	const TArray<UBmrInputMappingContext*> Contexts = {DashContext};
-	GetPlayerControllerChecked().SetupInputContexts(Contexts);
+		const TArray<const UBmrInputMappingContext*> Contexts = {DA.GetDashInputContext()};
+		GetPlayerControllerChecked().SetupInputContexts(Contexts);
+	});
 }
 
 // Removes the input context for SkillDash from the player controller
@@ -74,8 +72,8 @@ void USdPlayerControllerComponent::RemoveDashInputContext() const
 void USdPlayerControllerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, &ThisClass::OnDataAssetLoaded);
+
+	SetupDashInputContext();
 }
 
 // Clears all transient data created by this component
@@ -92,18 +90,8 @@ void USdPlayerControllerComponent::OnUnregister()
 		UGfpmUtils::UnloadAssets(ContextInputActions);
 		MyPC->RemoveInputContexts({DashContext});
 	}
-	
+
 	UGlobalMessageSubsystem::StopListeningForAllGlobalMessages(this);
 
 	Super::OnUnregister();
-}
-
-/*********************************************************************************************
- * Events
- ********************************************************************************************* */
-
-// Called when the NMM data asset is loaded and available
-void USdPlayerControllerComponent::OnDataAssetLoaded_Implementation(const class USdDataAsset* DataAsset)
-{
-	SetupDashInputContext();
 }
