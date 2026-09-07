@@ -22,6 +22,32 @@
 			"LoadingPhase": "Default"
 		}
 	],
+	"Plugins": [
+		{
+			"Name": "DataAssetsLoader",
+			"Enabled": true
+		},
+		{
+			"Name": "GameFeaturePluginsManager",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "MetaCheatManager",
+			"Enabled": true
+		},
+		{
+			"Name": "Mover",
+			"Enabled": true
+		},
+		{
+			"Name": "MyEditorUtils",
+			"Enabled": true
+		}
+	],
 	"ExplicitlyLoaded": true,
 	"BuiltInInitialFeatureState": "Registered"
 }
