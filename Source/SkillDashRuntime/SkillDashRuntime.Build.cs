@@ -12,11 +12,8 @@ public class SkillDashRuntime : ModuleRules
 		PublicDependencyModuleNames.AddRange(new[]
 			{
 				"Core"
-				, "UMG" // UUserWidget creation
-				, "GameplayAbilities", "GameplayTags" // Gameplay Ability System (GAS)
+				, "GameplayAbilities" // Gameplay Ability System (GAS)
 				// Bomber modules
-				, "Bomber"
-				, "GameFeaturePluginsManager"
 				, "MetaCheatManager" // USdCheatExtension
 				, "DataAssetsLoader" // Created USdDataAsset
 			}
@@ -25,8 +22,12 @@ public class SkillDashRuntime : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new[]
 			{
 				"CoreUObject", "Engine", "Slate", "SlateCore" // Core
+				, "UMG" // UUserWidget creation
+				, "GameplayTags" // FGameplayTag
 				, "Mover" // Used for dash impulse
 				// Bomber modules
+				, "Bomber"
+				, "GameFeaturePluginsManager" // Used for GfpmUtils
 				, "MyUtils"
 			}
 		);
