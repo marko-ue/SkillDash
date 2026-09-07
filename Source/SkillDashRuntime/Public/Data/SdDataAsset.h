@@ -16,7 +16,7 @@ class SKILLDASHRUNTIME_API USdDataAsset : public UDalPrimaryDataAsset
 	
 public:
 	/** Returns this Data Asset, is checked and wil crash if can't be obtained, e.g: when is not set. */
-	static const USdDataAsset& Get(const UObject* OptionalWorldContext = nullptr);
+	static const USdDataAsset& Get();
 	
 	/*********************************************************************************************
 	 * Input
