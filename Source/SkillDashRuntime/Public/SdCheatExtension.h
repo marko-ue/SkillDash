@@ -3,6 +3,7 @@
 #pragma once
 
 #include "MetaCheatManagerExtension.h"
+#include "HAL/IConsoleManager.h"
 #include "SdCheatExtension.generated.h"
 
 /**
