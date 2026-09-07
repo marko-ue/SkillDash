@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "MetaCheatManagerExtension.h"
 #include "SdCheatExtension.generated.h"
 
