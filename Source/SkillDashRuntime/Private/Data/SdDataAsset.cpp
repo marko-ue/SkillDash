@@ -36,7 +36,9 @@ float USdDataAsset::GetDashCooldownDuration() const
 	const float CvarCooldownDuration = USdCheatExtension::CVarDashCooldownDuration.GetValueOnAnyThread();
 	if (CvarCooldownDuration >= 0.f)
 	{
-		return FMath::Max(0.01f, CvarCooldownDuration);
+		// Always clamps to a minimum of 0.01, which prevents the cooldown duration from ever being set to 0,
+		// because a cooldown of 0 makes the cooldown stay forever
+		return FMath::Max(KINDA_SMALL_NUMBER, CvarCooldownDuration);
 	}
 #endif // !UE_BUILD_SHIPPING
 
