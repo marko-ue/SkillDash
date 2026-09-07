@@ -26,13 +26,23 @@ protected:
 	TObjectPtr<UProgressBar> CooldownProgressBar = nullptr;
 	
 	/** Tracks the world time for when the Dash ability cooldown started. */
-	UPROPERTY(Transient)
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, AdvancedDisplay, Transient, Category = "[SkillDash", meta = (BlueprintProtected))
 	float CooldownStartTime = 0.f;
 
 	/** Holds the cooldown duration of the Dash ability. */
-	UPROPERTY(Transient)
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, AdvancedDisplay, Transient, Category = "[SkillDash", meta = (BlueprintProtected))
 	float CooldownDuration = 0.f;
-
+	
+	/*********************************************************************************************
+	 * Main methods
+	 ********************************************************************************************* */
+protected:
+	/** Initializes the cooldown bar with a full percentage */
+	void SetCooldown() const;
+	
+	/** Listen for Dash cooldown to show or hide the widget */
+	void BindOnCooldownTagChanged();
+	
 	/*********************************************************************************************
 	 * Overrides
 	 ********************************************************************************************* */
@@ -43,6 +53,10 @@ protected:
 	/** Is executed every tick when widget is enabled. */
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
+	/** Called when the widget is removed from the viewport. */
+	virtual void NativeDestruct() override;
+	
 	/** Called when the cooldown tag for the Dash ability changes (when it goes on/off cooldown) */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[SkillDash]", meta = (BlueprintProtected))
 	void OnCooldownTagChanged(FGameplayTag Tag, int32 NewCount);
 };

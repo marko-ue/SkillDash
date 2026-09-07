@@ -18,22 +18,23 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdCooldownBarWidget)
 
 /*********************************************************************************************
- * Overrides
+ * Main methods
  ********************************************************************************************* */
 
-// Called after the underlying slate widget is constructed
-void USdCooldownBarWidget::NativeConstruct()
+// Initializes the cooldown bar with a full percentage
+void USdCooldownBarWidget::SetCooldown() const
 {
-	Super::NativeConstruct();
-    
 	if (!ensureMsgf(CooldownProgressBar, TEXT("ASSERT: [%i] %hs:\n'CooldownProgressBar' is not valid!"), __LINE__, __FUNCTION__))
 	{
 		return;
 	}
     
 	CooldownProgressBar->SetPercent(1.f);
-	SetVisibility(ESlateVisibility::Collapsed);
-    
+}
+
+// Listen for Dash cooldown to show or hide the widget
+void USdCooldownBarWidget::BindOnCooldownTagChanged()
+{
 	const USdPlayerStateComponent* PlayerStateComponent = USdUtils::GetPlayerStateComponent();
 	if (!ensureMsgf(PlayerStateComponent, TEXT("ASSERT: [%i] %hs:\n'PlayerStateComponent' is not valid!"), __LINE__, __FUNCTION__))
 	{
@@ -41,14 +42,30 @@ void USdCooldownBarWidget::NativeConstruct()
 	}
     
 	UAbilitySystemComponent* ASC = &PlayerStateComponent->GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-    
-	// Listen for Dash cooldown to show or hide the widget
+	
 	ASC->RegisterGameplayTagEvent(SdGameplayTags::Cooldown::DashCooldown, EGameplayTagEventType::NewOrRemoved)
-		.AddUObject(this, &ThisClass::OnCooldownTagChanged);
+	   .AddUObject(this, &ThisClass::OnCooldownTagChanged);
 }
 
+/*********************************************************************************************
+ * Overrides
+ ********************************************************************************************* */
+
+// Called after the underlying slate widget is constructed
+void USdCooldownBarWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	
+	SetVisibility(ESlateVisibility::Collapsed);
+    
+	SetCooldown();
+    
+	BindOnCooldownTagChanged();
+}
+
+
 // Called when the cooldown tag for the Dash ability changes (when it goes on/off cooldown)
-void USdCooldownBarWidget::OnCooldownTagChanged(const FGameplayTag Tag, int32 NewCount)
+void USdCooldownBarWidget::OnCooldownTagChanged_Implementation(const FGameplayTag Tag, int32 NewCount)
 {
 	if (NewCount > 0)
 	{
@@ -91,4 +108,29 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 	const float Elapsed = GetWorld()->GetTimeSeconds() - CooldownStartTime;
 	const float CooldownPercent = FMath::Clamp(1.f - (Elapsed / CooldownDuration), 0.f, 1.f);
 	CooldownProgressBar->SetPercent(CooldownPercent);
+}
+
+// Called when the widget is removed from the viewport
+void USdCooldownBarWidget::NativeDestruct()
+{
+	const USdPlayerStateComponent* PlayerStateComponent = USdUtils::GetPlayerStateComponent();
+	if (!PlayerStateComponent)
+	{
+		Super::NativeDestruct();
+		return;
+	}
+	
+	if (!PlayerStateComponent->GetPlayerState() || !PlayerStateComponent->GetPlayerState()->GetAbilitySystemComponent())
+	{
+		Super::NativeDestruct();
+		return;
+	}
+	
+	UAbilitySystemComponent* ASC = PlayerStateComponent->GetPlayerState()->GetAbilitySystemComponent();
+    
+	// Unbind from the gameplay tag event
+	ASC->RegisterGameplayTagEvent(
+		SdGameplayTags::Cooldown::DashCooldown,EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+	
+	Super::NativeDestruct();
 }
