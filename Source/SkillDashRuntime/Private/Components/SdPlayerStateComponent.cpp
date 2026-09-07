@@ -11,6 +11,7 @@
 #include "GameFramework/BmrPlayerState.h"
 #include "Subsystems/GlobalMessageSubsystem.h"
 #include "DalSubsystem.h"
+#include "Structures/BmrGameplayTags.h"
 
 // UE
 #include "AbilitySystemComponent.h"
@@ -77,6 +78,16 @@ void USdPlayerStateComponent::ClearDashAbility()
 	DashAbilityHandle = FGameplayAbilitySpecHandle();
 }
 
+// Clears the Dash ability's cooldown from the owner's ASC
+void USdPlayerStateComponent::ClearDashCooldown() const
+{
+	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
+	
+	FGameplayTagContainer CooldownTags;
+	CooldownTags.AddTag(SdGameplayTags::Cooldown::DashCooldown);
+	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
+}
+
 // Returns the Dash ability spec handle
 FGameplayAbilitySpecHandle USdPlayerStateComponent::GetDashAbilityHandle() const
 {
@@ -102,18 +113,27 @@ void USdPlayerStateComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	GiveDashAbility();
+	
+	// Listen to remove cooldown tag whenever the game state changes
+	UGlobalMessageSubsystem::CallOrStartListeningForGlobalMessage(BmrGameplayTags::Event::GameState_Changed, this, &ThisClass::OnGameStateChanged);
 }
 
 // Called when the component is unregistered, used to clean up resources
 void USdPlayerStateComponent::OnUnregister()
 {
-	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-    
-	// Clear dash cooldown so it doesn't carry over into the next game when restarting
-	FGameplayTagContainer CooldownTags;
-	CooldownTags.AddTag(SdGameplayTags::Cooldown::DashCooldown);
-	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
+	ClearDashCooldown();
 	
 	ClearDashAbility();
+	
 	Super::OnUnregister();
+}
+
+/*********************************************************************************************
+ * Events
+ ********************************************************************************************* */
+
+// Called when the current game state was changed
+void USdPlayerStateComponent::OnGameStateChanged_Implementation(const struct FGameplayEventData& Payload)
+{
+	ClearDashCooldown();
 }

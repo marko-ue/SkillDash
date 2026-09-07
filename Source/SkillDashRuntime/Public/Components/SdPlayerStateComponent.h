@@ -40,6 +40,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ClearDashAbility();
 	
+	/** Clears the Dash ability's cooldown from the owner's ASC. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	void ClearDashCooldown() const;
+	
 	/** Returns the Dash ability spec handle. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	FGameplayAbilitySpecHandle GetDashAbilityHandle() const; 
@@ -62,4 +66,12 @@ protected:
 
 	/** Clears all transient data created by this component. */
 	virtual void OnUnregister() override;
+
+	/*********************************************************************************************
+	 * Events
+	 ********************************************************************************************* */
+protected:
+	/** Called when the current game state was changed. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[Bomber]", meta = (BlueprintProtected))
+	void OnGameStateChanged(const struct FGameplayEventData& Payload);
 };
