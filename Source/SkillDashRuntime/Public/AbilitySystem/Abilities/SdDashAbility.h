@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Abilities/GameplayAbility.h"
+
 #include "SdDashAbility.generated.h"
 
 /**
@@ -13,17 +14,17 @@ UCLASS()
 class SKILLDASHRUNTIME_API USdDashAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
-	
+
 	/*********************************************************************************************
 	 * Overrides
 	 ********************************************************************************************* */
 protected:
 	/** Is overridden to prevent event-based activation if there is no cooldown GE set. */
 	virtual bool ShouldAbilityRespondToEvent(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayEventData* TriggerEventData) const override;
-	
+
 	/** Actually activate ability, do not call this directly. */
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-	
+
 	/** Is overridden to apply cooldown with set by caller tag for dash cooldown duration. */
 	void ApplyCooldown(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, FGameplayAbilityActivationInfo ActivationInfo) const;
 };

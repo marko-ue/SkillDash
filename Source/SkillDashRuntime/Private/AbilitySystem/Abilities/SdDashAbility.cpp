@@ -1,6 +1,5 @@
 // Copyright (c) Marko Petric & Yevhenii Selivanov
 
-
 #include "AbilitySystem/Abilities/SdDashAbility.h"
 
 // Sd
@@ -13,8 +12,8 @@
 
 // UE
 #include "AbilitySystemComponent.h"
-#include "GameplayCueManager.h"
 #include "DefaultMovementSet/InstantMovementEffects/BasicInstantMovementEffects.h"
+#include "GameplayCueManager.h"
 #include "MyUtilsLibraries/MultiplayerUtilsLibrary.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
@@ -27,14 +26,14 @@
 bool USdDashAbility::ShouldAbilityRespondToEvent(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayEventData* TriggerEventData) const
 {
 	return Super::ShouldAbilityRespondToEvent(ActorInfo, TriggerEventData)
-		&& ensureMsgf(GetCooldownGameplayEffect(), TEXT("ASSERT: [%i] %hs:\n'CooldownGE' is null!"), __LINE__, __FUNCTION__);
+	       && ensureMsgf(GetCooldownGameplayEffect(), TEXT("ASSERT: [%i] %hs:\n'CooldownGE' is null!"), __LINE__, __FUNCTION__);
 }
 
 // Actually activate ability, do not call this directly
 void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
+
 	const ABmrPawn* AvatarPawn = Cast<ABmrPawn>(ActorInfo->AvatarActor.Get());
 	if (!ensureMsgf(AvatarPawn, TEXT("ASSERT: [%i] %hs:\n'AvatarPawn' is null!"), __LINE__, __FUNCTION__))
 	{
@@ -46,12 +45,12 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	{
 		return;
 	}
-	
+
 	CommitAbility(Handle, ActorInfo, ActivationInfo);
-	
+
 	// The player will dash in the direction of the player's forward vector
 	const FVector DashDirection = AvatarPawn->GetActorForwardVector();
-	
+
 	// Impulse strength retrieved from data asset, dictates how far the player gets launched
 	const float ImpulseStrength = USdDataAsset::Get().GetDashImpulseStrength();
 
@@ -62,7 +61,7 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 
 	// Apply the dash movement effect
 	MoverComp->QueueInstantMovementEffect(DashEffect);
-	
+
 	// Execute the non replicated gameplay cue for the dash
 	if (ActorInfo->IsLocallyControlled())
 	{
@@ -70,7 +69,7 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		CueParams.Location = AvatarPawn->GetActorLocation();
 		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
 	}
-	
+
 	K2_EndAbility();
 }
 
@@ -85,7 +84,7 @@ void USdDashAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, cons
 
 	// Get the cooldown duration from this ability's data asset
 	float CooldownDuration = USdDataAsset::Get().GetDashCooldownDuration();
-    
+
 	// Compensate for replication delay on server for non-local clients
 	if (ActivationInfo.ActivationMode == EGameplayAbilityActivationMode::Authority && !ActorInfo->IsLocallyControlled())
 	{

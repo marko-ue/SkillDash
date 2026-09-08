@@ -3,16 +3,16 @@
 #include "Widgets/SdCooldownBarWidget.h"
 
 // Sd
+#include "Components/SdPlayerStateComponent.h"
 #include "SdGameplayTags.h"
 #include "SdUtils.h"
-#include "Components/SdPlayerStateComponent.h"
 
 // Bomber
 #include "GameFramework/BmrPlayerState.h"
 
 // UE
-#include "Components/ProgressBar.h"
 #include "AbilitySystemComponent.h"
+#include "Components/ProgressBar.h"
 #include "Data/SdDataAsset.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdCooldownBarWidget)
@@ -28,7 +28,7 @@ void USdCooldownBarWidget::SetCooldown() const
 	{
 		return;
 	}
-    
+
 	CooldownProgressBar->SetPercent(1.f);
 }
 
@@ -40,11 +40,11 @@ void USdCooldownBarWidget::BindOnCooldownTagChanged()
 	{
 		return;
 	}
-    
+
 	UAbilitySystemComponent* ASC = &PlayerStateComponent->GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-	
+
 	ASC->RegisterGameplayTagEvent(SdGameplayTags::GameplayEffect::DashCooldown, EGameplayTagEventType::NewOrRemoved)
-	   .AddUObject(this, &ThisClass::OnCooldownTagChanged);
+	    .AddUObject(this, &ThisClass::OnCooldownTagChanged);
 }
 
 /*********************************************************************************************
@@ -55,14 +55,13 @@ void USdCooldownBarWidget::BindOnCooldownTagChanged()
 void USdCooldownBarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	SetVisibility(ESlateVisibility::Collapsed);
-    
+
 	SetCooldown();
-    
+
 	BindOnCooldownTagChanged();
 }
-
 
 // Called when the cooldown tag for the Dash ability changes (when it goes on/off cooldown)
 void USdCooldownBarWidget::OnCooldownTagChanged_Implementation(const FGameplayTag Tag, int32 NewCount)
@@ -104,7 +103,7 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 		return;
 	}
 
-	// Elapsed tracks how much of the cooldown passed, and it's used to accurately update the progress bar percent 
+	// Elapsed tracks how much of the cooldown passed, and it's used to accurately update the progress bar percent
 	const float Elapsed = GetWorld()->GetTimeSeconds() - CooldownStartTime;
 	const float CooldownPercent = FMath::Clamp(1.f - (Elapsed / CooldownDuration), 0.f, 1.f);
 	CooldownProgressBar->SetPercent(CooldownPercent);
@@ -119,18 +118,19 @@ void USdCooldownBarWidget::NativeDestruct()
 		Super::NativeDestruct();
 		return;
 	}
-	
+
 	if (!PlayerStateComponent->GetPlayerState() || !PlayerStateComponent->GetPlayerState()->GetAbilitySystemComponent())
 	{
 		Super::NativeDestruct();
 		return;
 	}
-	
+
 	UAbilitySystemComponent* ASC = PlayerStateComponent->GetPlayerState()->GetAbilitySystemComponent();
-    
+
 	// Unbind from the gameplay tag event
 	ASC->RegisterGameplayTagEvent(
-		SdGameplayTags::GameplayEffect::DashCooldown,EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
-	
+	       SdGameplayTags::GameplayEffect::DashCooldown, EGameplayTagEventType::NewOrRemoved)
+	    .RemoveAll(this);
+
 	Super::NativeDestruct();
 }

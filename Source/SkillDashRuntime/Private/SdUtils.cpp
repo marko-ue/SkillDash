@@ -1,6 +1,5 @@
 // Copyright (c) Marko Petric & Yevhenii Selivanov
 
-
 #include "SdUtils.h"
 
 // SkillDash

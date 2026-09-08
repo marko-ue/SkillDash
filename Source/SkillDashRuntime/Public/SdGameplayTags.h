@@ -11,24 +11,24 @@ namespace SdGameplayTags
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Widget_CooldownBar);
 	} // namespace UI
-	
+
 	namespace Event
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivated);
 	} // namespace Event
-	
+
 	namespace GameplayEffect
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashCooldown);
 	} // namespace GameplayEffect
-	
+
 	namespace SetByCaller
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashCooldownDuration);
 	} // namespace SetByCaller
-	
+
 	namespace GameplayCue
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivation)
-	} //namespace GameplayCue
+	} // namespace GameplayCue
 } // namespace SdGameplayTags

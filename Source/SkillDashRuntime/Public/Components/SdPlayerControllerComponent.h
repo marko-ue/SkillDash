@@ -22,19 +22,19 @@ class SKILLDASHRUNTIME_API USdPlayerControllerComponent : public UActorComponent
 public:
 	/** Default constructor. */
 	USdPlayerControllerComponent();
-	
+
 	/** Returns Player Controller of this component. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	ABmrPlayerController* GetPlayerController() const;
 	ABmrPlayerController& GetPlayerControllerChecked() const;
-	
+
 	/*********************************************************************************************
 	 * Main methods
 	 ********************************************************************************************* */
 protected:
 	/** Sets up the input context for SkillDash for the player controller. */
 	void SetupDashInputContext() const;
-	
+
 	/** Removes the input context for SkillDash from the player controller. */
 	void RemoveDashInputContext() const;
 

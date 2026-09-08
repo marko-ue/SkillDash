@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "GameplayAbilitySpecHandle.h"
 #include "Components/ActorComponent.h"
+#include "GameplayAbilitySpecHandle.h"
 
 #include "SDPlayerStateComponent.generated.h"
 
@@ -27,7 +27,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	class ABmrPlayerState* GetPlayerState() const;
 	ABmrPlayerState& GetPlayerStateChecked() const;
-	
+
 	/*********************************************************************************************
 	 * Main methods
 	 ********************************************************************************************* */
@@ -35,23 +35,23 @@ public:
 	/** Grants the Dash ability to the owner's ASC. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void GiveDashAbility();
-	
+
 	/** Clears the Dash ability from the owner's ASC. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ClearDashAbility();
-	
+
 	/** Clears the Dash ability's cooldown from the owner's ASC. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ClearDashCooldown() const;
-	
+
 	/** Returns the Dash ability spec handle. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
-	FGameplayAbilitySpecHandle GetDashAbilityHandle() const; 
-	
+	FGameplayAbilitySpecHandle GetDashAbilityHandle() const;
+
 	/** Broadcasts the dash ability activation event when input is started. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void OnDashInputStarted();
-	
+
 protected:
 	/** Handle to the granted Dash ability, used for removal. */
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Transient, AdvancedDisplay, Category = "[SkillDash]", meta = (BlueprintProtected))

@@ -13,11 +13,11 @@ UCLASS()
 class SKILLDASHRUNTIME_API USdDataAsset : public UDalPrimaryDataAsset
 {
 	GENERATED_BODY()
-	
+
 public:
 	/** Returns this Data Asset, is checked and wil crash if can't be obtained, e.g: when is not set. */
 	static const USdDataAsset& Get();
-	
+
 	/*********************************************************************************************
 	 * Input
 	 ********************************************************************************************* */
@@ -38,11 +38,11 @@ public:
 	/** Returns the dash ability class. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE TSubclassOf<class UGameplayAbility> GetDashAbilityClass() const { return DashAbilityClass; }
-	
+
 	/** Returns the dash impulse strength. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	float GetDashImpulseStrength() const;
-	
+
 	/** Returns the dash ability cooldown duration. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	float GetDashCooldownDuration() const;
@@ -51,11 +51,11 @@ protected:
 	/** The dash ability class to grant to the player. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	TSubclassOf<UGameplayAbility> DashAbilityClass = nullptr;
-	
+
 	/** How strong the dash impulse should be (how far the player gets launched). */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	float DashImpulseStrength = 6000.f;
-	
+
 	/** How long the cooldown of the dash ability lasts. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	float DashCooldownDuration = 3.5f;

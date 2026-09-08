@@ -13,7 +13,7 @@ UCLASS()
 class SKILLDASHRUNTIME_API USdUtils : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+
 	/*********************************************************************************************
 	 * Object getters
 	 ********************************************************************************************* */

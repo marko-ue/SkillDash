@@ -1,6 +1,5 @@
 // Copyright (c) Marko Petric & Yevhenii Selivanov
 
-
 #include "Components/SdPlayerStateComponent.h"
 
 // Sd
@@ -8,10 +7,10 @@
 #include "SdGameplayTags.h"
 
 // Bomber
-#include "GameFramework/BmrPlayerState.h"
-#include "Subsystems/GlobalMessageSubsystem.h"
 #include "DalSubsystem.h"
+#include "GameFramework/BmrPlayerState.h"
 #include "Structures/BmrGameplayTags.h"
+#include "Subsystems/GlobalMessageSubsystem.h"
 
 // UE
 #include "AbilitySystemComponent.h"
@@ -50,7 +49,7 @@ void USdPlayerStateComponent::GiveDashAbility()
 	{
 		return;
 	}
-	
+
 	// Lambda that gives the Dash ability when the data asset becomes valid
 	UDalSubsystem::Get().ListenForDataAsset<USdDataAsset>(this, [this](const USdDataAsset& DA)
 	{
@@ -82,7 +81,7 @@ void USdPlayerStateComponent::ClearDashAbility()
 void USdPlayerStateComponent::ClearDashCooldown() const
 {
 	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-	
+
 	FGameplayTagContainer CooldownTags;
 	CooldownTags.AddTag(SdGameplayTags::GameplayEffect::DashCooldown);
 	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
@@ -111,9 +110,9 @@ void USdPlayerStateComponent::OnDashInputStarted()
 void USdPlayerStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	GiveDashAbility();
-	
+
 	// Listen to remove cooldown tag whenever the game state changes
 	UGlobalMessageSubsystem::CallOrStartListeningForGlobalMessage(BmrGameplayTags::Event::GameState_Changed, this, &ThisClass::OnGameStateChanged);
 }
@@ -122,9 +121,9 @@ void USdPlayerStateComponent::BeginPlay()
 void USdPlayerStateComponent::OnUnregister()
 {
 	ClearDashCooldown();
-	
+
 	ClearDashAbility();
-	
+
 	Super::OnUnregister();
 }
 
