@@ -43,7 +43,7 @@ void USdCooldownBarWidget::BindOnCooldownTagChanged()
     
 	UAbilitySystemComponent* ASC = &PlayerStateComponent->GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 	
-	ASC->RegisterGameplayTagEvent(SdGameplayTags::Cooldown::DashCooldown, EGameplayTagEventType::NewOrRemoved)
+	ASC->RegisterGameplayTagEvent(SdGameplayTags::GameplayEffect::DashCooldown, EGameplayTagEventType::NewOrRemoved)
 	   .AddUObject(this, &ThisClass::OnCooldownTagChanged);
 }
 
@@ -130,7 +130,7 @@ void USdCooldownBarWidget::NativeDestruct()
     
 	// Unbind from the gameplay tag event
 	ASC->RegisterGameplayTagEvent(
-		SdGameplayTags::Cooldown::DashCooldown,EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+		SdGameplayTags::GameplayEffect::DashCooldown,EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
 	
 	Super::NativeDestruct();
 }

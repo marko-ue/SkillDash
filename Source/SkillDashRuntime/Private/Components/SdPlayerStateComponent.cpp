@@ -84,7 +84,7 @@ void USdPlayerStateComponent::ClearDashCooldown() const
 	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 	
 	FGameplayTagContainer CooldownTags;
-	CooldownTags.AddTag(SdGameplayTags::Cooldown::DashCooldown);
+	CooldownTags.AddTag(SdGameplayTags::GameplayEffect::DashCooldown);
 	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
 }
 
