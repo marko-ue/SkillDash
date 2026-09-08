@@ -48,8 +48,11 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 
 	CommitAbility(Handle, ActorInfo, ActivationInfo);
 
-	// The player will dash in the direction of the player's forward vector
-	const FVector DashDirection = AvatarPawn->GetActorForwardVector();
+	// Dash in the direction of current velocity if moving, otherwise use forward vector
+	const FVector CurrentVelocity = MoverComp->GetVelocity();
+	const FVector DashDirection = CurrentVelocity.SizeSquared() > KINDA_SMALL_NUMBER
+	                                  ? CurrentVelocity.GetSafeNormal()
+	                                  : AvatarPawn->GetActorForwardVector();
 
 	// Impulse strength retrieved from data asset, dictates how far the player gets launched
 	const float ImpulseStrength = USdDataAsset::Get().GetDashImpulseStrength();
@@ -90,7 +93,7 @@ void USdDashAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, cons
 	{
 		const APawn* AvatarPawn = Cast<APawn>(ASC->GetAvatarActor());
 		const float PlayerPing = UMultiplayerUtilsLibrary::GetPlayerPingSeconds(AvatarPawn);
-		CooldownDuration = FMath::Max(0.f, CooldownDuration - PlayerPing);
+		CooldownDuration = FMath::Max(KINDA_SMALL_NUMBER, CooldownDuration - PlayerPing);
 	}
 
 	// Applies the cooldown GE with a SetByCaller
