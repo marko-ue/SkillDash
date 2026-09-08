@@ -18,6 +18,9 @@ class SKILLDASHRUNTIME_API USdDashAbility : public UGameplayAbility
 	 * Overrides
 	 ********************************************************************************************* */
 protected:
+	/** Is overridden to prevent event-based activation if there is no cooldown GE set. */
+	virtual bool ShouldAbilityRespondToEvent(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayEventData* TriggerEventData) const override;
+	
 	/** Actually activate ability, do not call this directly. */
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	

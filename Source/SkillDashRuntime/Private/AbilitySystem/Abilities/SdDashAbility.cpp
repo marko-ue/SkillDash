@@ -19,6 +19,17 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
 
+/*********************************************************************************************
+ * Overrides
+ ********************************************************************************************* */
+
+// Is overridden to prevent event-based activation if there is no cooldown GE set
+bool USdDashAbility::ShouldAbilityRespondToEvent(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayEventData* TriggerEventData) const
+{
+	return Super::ShouldAbilityRespondToEvent(ActorInfo, TriggerEventData)
+		&& ensureMsgf(GetCooldownGameplayEffect(), TEXT("ASSERT: [%i] %hs:\n'CooldownGE' is null!"), __LINE__, __FUNCTION__);
+}
+
 // Actually activate ability, do not call this directly
 void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -51,18 +62,14 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 
 	// Apply the dash movement effect
 	MoverComp->QueueInstantMovementEffect(DashEffect);
-
-	// Retrieves the cooldown GE set on this ability's CDO
-	const UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
-	if (!ensureMsgf(CooldownGE, TEXT("ASSERT: [%i] %hs:\n'CooldownGE' is null!"), __LINE__, __FUNCTION__))
-	{
-		return;
-	}
 	
 	// Execute the non replicated gameplay cue for the dash
-	FGameplayCueParameters CueParams;
-	CueParams.Location = AvatarPawn->GetActorLocation();
-	UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
+	if (ActorInfo->IsLocallyControlled())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = AvatarPawn->GetActorLocation();
+		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
+	}
 	
 	K2_EndAbility();
 }
@@ -70,13 +77,7 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 // Is overridden to apply cooldown with set by caller tag for dash cooldown duration
 void USdDashAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
 {
-	const UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
-	if (!CooldownGE || !ActorInfo)
-	{
-		return;
-	}
-
-	UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+	UAbilitySystemComponent* ASC = ActorInfo ? ActorInfo->AbilitySystemComponent.Get() : nullptr;
 	if (!ASC || !ASC->HasAuthorityOrPredictionKey(&ActivationInfo))
 	{
 		return;
@@ -94,7 +95,7 @@ void USdDashAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, cons
 	}
 
 	// Applies the cooldown GE with a SetByCaller
-	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(CooldownGE->GetClass(), GetAbilityLevel(), ASC->MakeEffectContext());
+	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(GetCooldownGameplayEffect()->GetClass(), GetAbilityLevel(), ASC->MakeEffectContext());
 	SpecHandle.Data->SetSetByCallerMagnitude(SdGameplayTags::SetByCaller::DashCooldownDuration, CooldownDuration);
 	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get(), ASC->GetPredictionKeyForNewAction());
 }
