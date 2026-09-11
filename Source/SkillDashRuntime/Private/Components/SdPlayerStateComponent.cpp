@@ -126,8 +126,10 @@ void USdPlayerStateComponent::BeginPlay()
 void USdPlayerStateComponent::OnUnregister()
 {
 	ClearDashCooldown();
-
 	ClearDashAbility();
+
+	UGlobalMessageSubsystem::ClearCachedMessages(SdGameplayTags::Event::DashActivated);
+	UGlobalMessageSubsystem::StopListeningForAllGlobalMessages(this);
 
 	Super::OnUnregister();
 }
