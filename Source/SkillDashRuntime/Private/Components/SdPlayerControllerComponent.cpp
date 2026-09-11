@@ -26,7 +26,7 @@ USdPlayerControllerComponent::USdPlayerControllerComponent()
 // Returns Player Controller of this component
 ABmrPlayerController* USdPlayerControllerComponent::GetPlayerController() const
 {
-	return Cast<ABmrPlayerController>(GetOwner());
+	return GetOwner<ABmrPlayerController>();
 }
 
 ABmrPlayerController& USdPlayerControllerComponent::GetPlayerControllerChecked() const
