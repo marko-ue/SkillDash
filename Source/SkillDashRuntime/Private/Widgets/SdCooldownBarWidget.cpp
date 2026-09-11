@@ -115,24 +115,16 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 void USdCooldownBarWidget::NativeDestruct()
 {
 	const USdPlayerStateComponent* PlayerStateComponent = USdUtils::GetPlayerStateComponent();
-	if (!PlayerStateComponent)
+	const ABmrPlayerState* PlayerState = PlayerStateComponent ? PlayerStateComponent->GetPlayerState() : nullptr;
+	UAbilitySystemComponent* ASC = PlayerState ? PlayerState->GetAbilitySystemComponent() : nullptr;
+
+	if (ASC)
 	{
-		Super::NativeDestruct();
-		return;
+		// Unbind from the gameplay tag event
+		ASC->RegisterGameplayTagEvent(
+			   SdGameplayTags::GameplayEffect::DashCooldown, EGameplayTagEventType::NewOrRemoved)
+			.RemoveAll(this);
 	}
-
-	if (!PlayerStateComponent->GetPlayerState() || !PlayerStateComponent->GetPlayerState()->GetAbilitySystemComponent())
-	{
-		Super::NativeDestruct();
-		return;
-	}
-
-	UAbilitySystemComponent* ASC = PlayerStateComponent->GetPlayerState()->GetAbilitySystemComponent();
-
-	// Unbind from the gameplay tag event
-	ASC->RegisterGameplayTagEvent(
-	       SdGameplayTags::GameplayEffect::DashCooldown, EGameplayTagEventType::NewOrRemoved)
-	    .RemoveAll(this);
 
 	Super::NativeDestruct();
 }
