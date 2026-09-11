@@ -59,4 +59,12 @@ protected:
 	/** Called when the cooldown tag for the Dash ability changes (when it goes on/off cooldown) */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[SkillDash]", meta = (BlueprintProtected))
 	void OnCooldownTagChanged(FGameplayTag Tag, int32 NewCount);
+
+	/*********************************************************************************************
+	 * Events
+	 ********************************************************************************************* */
+protected:
+	/** Called when the local player state is initialized and its assigned character is ready. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[SkillDash]", meta = (BlueprintProtected))
+	void OnLocalPlayerStateReady(const struct FGameplayEventData& Payload);
 };

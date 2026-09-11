@@ -4,16 +4,18 @@
 
 // Sd
 #include "Components/SdPlayerStateComponent.h"
+#include "Data/SdDataAsset.h"
 #include "SdGameplayTags.h"
 #include "SdUtils.h"
 
 // Bomber
 #include "GameFramework/BmrPlayerState.h"
+#include "Structures/BmrGameplayTags.h"
+#include "Subsystems/GlobalMessageSubsystem.h"
 
 // UE
 #include "AbilitySystemComponent.h"
 #include "Components/ProgressBar.h"
-#include "Data/SdDataAsset.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdCooldownBarWidget)
 
@@ -56,11 +58,11 @@ void USdCooldownBarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	UGlobalMessageSubsystem::CallOrStartListeningForGlobalMessage(BmrGameplayTags::Event::Player_LocalPawnReady, this, &ThisClass::OnLocalPlayerStateReady);
+
 	SetVisibility(ESlateVisibility::Collapsed);
 
 	ResetPercent();
-
-	BindOnCooldownTagChanged();
 }
 
 // Called when the cooldown tag for the Dash ability changes (when it goes on/off cooldown)
@@ -92,7 +94,7 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 		return;
 	}
 
-	if (!ensureMsgf(CooldownProgressBar, TEXT("ASSERT: [%i] %hs:\n'CooldownProgressBar' is not valid!"), __LINE__, __FUNCTION__))
+	if (!CooldownProgressBar)
 	{
 		return;
 	}
@@ -133,4 +135,15 @@ void USdCooldownBarWidget::NativeDestruct()
 	    .RemoveAll(this);
 
 	Super::NativeDestruct();
+}
+
+/*********************************************************************************************
+ * Events
+ ********************************************************************************************* */
+
+// Called when the local player state is initialized and its assigned character is ready
+void USdCooldownBarWidget::OnLocalPlayerStateReady_Implementation(const FGameplayEventData& Payload)
+{
+	// Gameplay tag event can now be registered, as the player state and its ASC are both valid
+	BindOnCooldownTagChanged();
 }
