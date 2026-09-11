@@ -11,8 +11,6 @@
 #include "DataAssets/BmrInputMappingContext.h"
 #include "GfpmUtils.h"
 #include "MyUtilsLibraries/InputUtilsLibrary.h"
-#include "Subsystems/GlobalMessageSubsystem.h"
-#include "TimerManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerControllerComponent)
 
@@ -52,16 +50,20 @@ void USdPlayerControllerComponent::SetupDashInputContext() const
 }
 
 // Removes the input context for SkillDash from the player controller
-void USdPlayerControllerComponent::RemoveDashInputContext() const
+void USdPlayerControllerComponent::RemoveDashInputContextAndActions() const
 {
-	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
-	if (!ensureMsgf(DashContext, TEXT("ASSERT: [%i] %hs:\n'DashContext' is not valid!"), __LINE__, __FUNCTION__))
-	{
-		return;
-	}
+	ABmrPlayerController* MyPC = GetPlayerController();
 
-	const TArray<UBmrInputMappingContext*> Contexts = {DashContext};
-	GetPlayerControllerChecked().RemoveInputContexts(Contexts);
+	const USdDataAsset* DataAsset = UDalSubsystem::GetDataAsset<USdDataAsset>();
+	UBmrInputMappingContext* DashContext = DataAsset ? DataAsset->GetDashInputContext() : nullptr;
+	if (MyPC && DashContext)
+	{
+		TArray<UInputAction*> ContextInputActions;
+		UInputUtilsLibrary::GetAllActionsInContext(MyPC, DashContext, EInputActionInContextState::Any, /*out*/ ContextInputActions);
+		UInputUtilsLibrary::UnbindInputActionsInContext(MyPC, DashContext);
+		UGfpmUtils::UnloadAssets(ContextInputActions);
+		MyPC->RemoveInputContexts({DashContext});
+	}
 }
 
 /*********************************************************************************************
@@ -73,25 +75,19 @@ void USdPlayerControllerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetupDashInputContext();
+	if (GetPlayerControllerChecked().IsLocalController())
+	{
+		SetupDashInputContext();
+	}
 }
 
 // Clears all transient data created by this component
 void USdPlayerControllerComponent::OnUnregister()
 {
-	ABmrPlayerController* MyPC = GetPlayerController();
-
-	UBmrInputMappingContext* DashContext = USdDataAsset::Get().GetDashInputContext();
-	if (MyPC && DashContext)
+	if (GetPlayerControllerChecked().IsLocalController())
 	{
-		TArray<UInputAction*> ContextInputActions;
-		UInputUtilsLibrary::GetAllActionsInContext(MyPC, DashContext, EInputActionInContextState::Any, /*out*/ ContextInputActions);
-		UInputUtilsLibrary::UnbindInputActionsInContext(MyPC, DashContext);
-		UGfpmUtils::UnloadAssets(ContextInputActions);
-		MyPC->RemoveInputContexts({DashContext});
+		RemoveDashInputContextAndActions();
 	}
-
-	UGlobalMessageSubsystem::StopListeningForAllGlobalMessages(this);
-
+	
 	Super::OnUnregister();
 }

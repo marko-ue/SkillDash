@@ -36,7 +36,7 @@ protected:
 	void SetupDashInputContext() const;
 
 	/** Removes the input context for SkillDash from the player controller. */
-	void RemoveDashInputContext() const;
+	void RemoveDashInputContextAndActions() const;
 
 	/*********************************************************************************************
 	 * Overrides
