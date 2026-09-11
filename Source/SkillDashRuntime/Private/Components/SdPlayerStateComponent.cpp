@@ -87,6 +87,12 @@ void USdPlayerStateComponent::ClearDashCooldown() const
 
 	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 
+	// Return if there's no cooldown
+	if (!ASC->HasMatchingGameplayTag(SdGameplayTags::GameplayEffect::DashCooldown))
+	{
+		return;
+	}
+
 	FGameplayTagContainer CooldownTags;
 	CooldownTags.AddTag(SdGameplayTags::GameplayEffect::DashCooldown);
 	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
@@ -133,5 +139,7 @@ void USdPlayerStateComponent::OnUnregister()
 // Called when the current game state was changed
 void USdPlayerStateComponent::OnGameStateChanged_Implementation(const struct FGameplayEventData& Payload)
 {
+	// The call here ensures the cooldown gets cleared whenever the game state changes
+	// like if transitioning from InGame to GameStarting (when a match is restarted)
 	ClearDashCooldown();
 }
