@@ -5,7 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "GameplayAbilitySpecHandle.h"
 
-#include "SDPlayerStateComponent.generated.h"
+#include "SdPlayerStateComponent.generated.h"
 
 /**
  * Represents the Player State in the SkillDash module, where the Owner is Player State actor.
@@ -33,15 +33,15 @@ public:
 	 ********************************************************************************************* */
 public:
 	/** Grants the Dash ability to the owner's ASC. */
-	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "[SkillDash]")
 	void GiveDashAbility();
 
 	/** Clears the Dash ability from the owner's ASC. */
-	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "[SkillDash]")
 	void ClearDashAbility();
 
 	/** Clears the Dash ability's cooldown from the owner's ASC. */
-	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "[SkillDash]")
 	void ClearDashCooldown() const;
 
 	/** Broadcasts the dash ability activation event when input is started. */
@@ -63,6 +63,6 @@ protected:
 	 ********************************************************************************************* */
 protected:
 	/** Called when the current game state was changed. */
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[Bomber]", meta = (BlueprintProtected))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[SkillDash]", meta = (BlueprintProtected))
 	void OnGameStateChanged(const struct FGameplayEventData& Payload);
 };

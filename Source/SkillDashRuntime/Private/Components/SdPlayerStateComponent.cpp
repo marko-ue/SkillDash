@@ -80,6 +80,11 @@ void USdPlayerStateComponent::ClearDashAbility()
 // Clears the Dash ability's cooldown from the owner's ASC
 void USdPlayerStateComponent::ClearDashCooldown() const
 {
+	if (!GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
 	UAbilitySystemComponent* ASC = &GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 
 	FGameplayTagContainer CooldownTags;
