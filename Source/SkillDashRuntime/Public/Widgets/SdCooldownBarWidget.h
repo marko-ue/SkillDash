@@ -26,11 +26,11 @@ protected:
 	TObjectPtr<UProgressBar> CooldownProgressBar = nullptr;
 
 	/** Tracks the world time for when the Dash ability cooldown started. */
-	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, AdvancedDisplay, Transient, Category = "[SkillDash", meta = (BlueprintProtected))
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, AdvancedDisplay, Transient, Category = "[SkillDash]", meta = (BlueprintProtected))
 	float CooldownStartTime = 0.f;
 
 	/** Holds the cooldown duration of the Dash ability. */
-	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, AdvancedDisplay, Transient, Category = "[SkillDash", meta = (BlueprintProtected))
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, AdvancedDisplay, Transient, Category = "[SkillDash]", meta = (BlueprintProtected))
 	float CooldownDuration = 0.f;
 
 	/*********************************************************************************************
