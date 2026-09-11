@@ -3,6 +3,7 @@
 #include "Components/SdPlayerStateComponent.h"
 
 // Sd
+#include "AbilitySystem/Abilities/SdDashAbility.h"
 #include "Data/SdDataAsset.h"
 #include "SdGameplayTags.h"
 
@@ -42,7 +43,7 @@ ABmrPlayerState& USdPlayerStateComponent::GetPlayerStateChecked() const
  * Main methods
  ********************************************************************************************* */
 
-// Gives the dash ability to the owner's ASC
+// Gives the Dash ability to the owner's ASC
 void USdPlayerStateComponent::GiveDashAbility()
 {
 	if (!GetOwner()->HasAuthority())
@@ -55,11 +56,11 @@ void USdPlayerStateComponent::GiveDashAbility()
 	{
 		UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 		const FGameplayAbilitySpec AbilitySpec(DA.GetDashAbilityClass());
-		DashAbilityHandle = ASC.GiveAbility(AbilitySpec);
+		ASC.GiveAbility(AbilitySpec);
 	});
 }
 
-// Clears the dash ability from the owner's ASC
+// Clears the Dash ability from the owner's ASC
 void USdPlayerStateComponent::ClearDashAbility()
 {
 	if (!GetOwner()->HasAuthority())
@@ -67,14 +68,13 @@ void USdPlayerStateComponent::ClearDashAbility()
 		return;
 	}
 
-	if (!DashAbilityHandle.IsValid())
-	{
-		return;
-	}
-
 	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
-	ASC.ClearAbility(DashAbilityHandle);
-	DashAbilityHandle = FGameplayAbilitySpecHandle();
+
+	const FGameplayAbilitySpec* Spec = ASC.FindAbilitySpecFromClass(USdDashAbility::StaticClass());
+	if (Spec)
+	{
+		ASC.ClearAbility(Spec->Handle);
+	}
 }
 
 // Clears the Dash ability's cooldown from the owner's ASC
@@ -85,12 +85,6 @@ void USdPlayerStateComponent::ClearDashCooldown() const
 	FGameplayTagContainer CooldownTags;
 	CooldownTags.AddTag(SdGameplayTags::GameplayEffect::DashCooldown);
 	ASC->RemoveActiveEffectsWithGrantedTags(CooldownTags);
-}
-
-// Returns the Dash ability spec handle
-FGameplayAbilitySpecHandle USdPlayerStateComponent::GetDashAbilityHandle() const
-{
-	return DashAbilityHandle;
 }
 
 // Broadcasts the dash ability activation event when input is started

@@ -44,19 +44,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ClearDashCooldown() const;
 
-	/** Returns the Dash ability spec handle. */
-	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
-	FGameplayAbilitySpecHandle GetDashAbilityHandle() const;
-
 	/** Broadcasts the dash ability activation event when input is started. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void OnDashInputStarted();
-
-protected:
-	/** Handle to the granted Dash ability, used for removal. */
-	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Transient, AdvancedDisplay, Category = "[SkillDash]", meta = (BlueprintProtected))
-	FGameplayAbilitySpecHandle DashAbilityHandle;
-
+	
 	/*********************************************************************************************
 	 * Overrides
 	 ********************************************************************************************* */
