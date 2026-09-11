@@ -38,7 +38,7 @@ protected:
 	 ********************************************************************************************* */
 protected:
 	/** Initializes the cooldown bar with a full percentage */
-	void SetCooldown() const;
+	void ResetPercent() const;
 
 	/** Listen for Dash cooldown to show or hide the widget */
 	void BindOnCooldownTagChanged();

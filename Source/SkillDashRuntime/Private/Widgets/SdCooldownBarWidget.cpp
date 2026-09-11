@@ -22,7 +22,7 @@
  ********************************************************************************************* */
 
 // Initializes the cooldown bar with a full percentage
-void USdCooldownBarWidget::SetCooldown() const
+void USdCooldownBarWidget::ResetPercent() const
 {
 	if (!ensureMsgf(CooldownProgressBar, TEXT("ASSERT: [%i] %hs:\n'CooldownProgressBar' is not valid!"), __LINE__, __FUNCTION__))
 	{
@@ -58,7 +58,7 @@ void USdCooldownBarWidget::NativeConstruct()
 
 	SetVisibility(ESlateVisibility::Collapsed);
 
-	SetCooldown();
+	ResetPercent();
 
 	BindOnCooldownTagChanged();
 }
