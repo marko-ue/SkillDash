@@ -3,7 +3,6 @@
 #include "Components/SdPlayerStateComponent.h"
 
 // Sd
-#include "AbilitySystem/Abilities/SdDashAbility.h"
 #include "Data/SdDataAsset.h"
 #include "SdGameplayTags.h"
 
@@ -70,7 +69,8 @@ void USdPlayerStateComponent::ClearDashAbility()
 
 	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 
-	const FGameplayAbilitySpec* Spec = ASC.FindAbilitySpecFromClass(USdDashAbility::StaticClass());
+	const USdDataAsset* DataAsset = UDalSubsystem::GetDataAsset<USdDataAsset>();
+	const FGameplayAbilitySpec* Spec = ASC.FindAbilitySpecFromClass(DataAsset->GetDashAbilityClass());
 	if (Spec)
 	{
 		ASC.ClearAbility(Spec->Handle);
