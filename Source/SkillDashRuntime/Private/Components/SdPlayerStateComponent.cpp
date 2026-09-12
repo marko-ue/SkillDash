@@ -70,7 +70,7 @@ void USdPlayerStateComponent::ClearDashAbility()
 	UAbilitySystemComponent& ASC = GetPlayerStateChecked().GetAbilitySystemComponentChecked();
 
 	const USdDataAsset* DataAsset = UDalSubsystem::GetDataAsset<USdDataAsset>();
-	const FGameplayAbilitySpec* Spec = ASC.FindAbilitySpecFromClass(DataAsset->GetDashAbilityClass());
+	const FGameplayAbilitySpec* Spec = DataAsset ? ASC.FindAbilitySpecFromClass(DataAsset->GetDashAbilityClass()) : nullptr;
 	if (Spec)
 	{
 		ASC.ClearAbility(Spec->Handle);
