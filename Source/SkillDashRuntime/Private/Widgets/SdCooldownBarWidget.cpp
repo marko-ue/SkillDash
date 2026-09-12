@@ -114,6 +114,8 @@ void USdCooldownBarWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 // Called when the widget is removed from the viewport
 void USdCooldownBarWidget::NativeDestruct()
 {
+	UGlobalMessageSubsystem::StopListeningForAllGlobalMessages(this);
+	
 	const USdPlayerStateComponent* PlayerStateComponent = USdUtils::GetPlayerStateComponent();
 	const ABmrPlayerState* PlayerState = PlayerStateComponent ? PlayerStateComponent->GetPlayerState() : nullptr;
 	UAbilitySystemComponent* ASC = PlayerState ? PlayerState->GetAbilitySystemComponent() : nullptr;
