@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright (c) Marko Petric & Yevhenii Selivanov
 
 using UnrealBuildTool;
 
@@ -6,48 +6,30 @@ public class SkillDashRuntime : ModuleRules
 {
 	public SkillDashRuntime(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
-		PublicIncludePaths.AddRange(
-			new string[] {
-				// ... add public include paths required here ...
-			}
-			);
-				
-		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-				// ... add other private include paths required here ...
-			}
-			);
-			
-		
-		PublicDependencyModuleNames.AddRange(
-			new string[]
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		CppCompileWarningSettings.NonInlinedGenCppWarningLevel = WarningLevel.Error;
+
+		PublicDependencyModuleNames.AddRange(new[]
 			{
-				"Core",
-				// ... add other public dependencies that you statically link with here ...
+				"Core"
+				, "GameplayAbilities" // Gameplay Ability System (GAS)
+				// Bomber modules
+				, "MetaCheatManager" // USdCheatExtension
+				, "DataAssetsLoader" // Created USdDataAsset
 			}
-			);
-			
-		
-		PrivateDependencyModuleNames.AddRange(
-			new string[]
+		);
+
+		PrivateDependencyModuleNames.AddRange(new[]
 			{
-				"CoreUObject",
-				"Engine",
-				"Slate",
-				"SlateCore",
-				// ... add private dependencies that you statically link with here ...	
+				"CoreUObject", "Engine", "Slate", "SlateCore" // Core
+				, "UMG" // UUserWidget creation
+				, "GameplayTags" // FGameplayTag
+				, "Mover" // Used for dash impulse
+				// Bomber modules
+				, "Bomber"
+				, "GameFeaturePluginsManager" // Used for GfpmUtils
+				, "MyUtils"
 			}
-			);
-		
-		
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
-				// ... add any modules that your module loads dynamically here ...
-			}
-			);
+		);
 	}
 }

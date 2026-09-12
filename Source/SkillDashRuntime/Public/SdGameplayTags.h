@@ -1,0 +1,34 @@
+// Copyright (c) Marko Petric & Yevhenii Selivanov
+
+#pragma once
+
+// UE
+#include "NativeGameplayTags.h" // UE_DECLARE_GAMEPLAY_TAG_EXTERN
+
+namespace SdGameplayTags
+{
+	namespace UI
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Widget_CooldownBar);
+	} // namespace UI
+
+	namespace Event
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivated);
+	} // namespace Event
+
+	namespace GameplayEffect
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashCooldown);
+	} // namespace GameplayEffect
+
+	namespace SetByCaller
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashCooldownDuration);
+	} // namespace SetByCaller
+
+	namespace GameplayCue
+	{
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivation)
+	} // namespace GameplayCue
+} // namespace SdGameplayTags

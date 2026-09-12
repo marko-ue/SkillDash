@@ -1,9 +1,9 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "0.01",
+	"VersionName": "1.0",
 	"FriendlyName": "SkillDash",
-	"Description": "",
+	"Description": "Dash gameplay ability that applies a velocity to the player upon pressing input, with a cooldown.",
 	"Category": "Game Features",
 	"CreatedBy": "Marko Petric & Yevhenii Selivanov",
 	"CreatedByURL": "https://markopetric.dev",
@@ -20,6 +20,32 @@
 			"Name": "SkillDashRuntime",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "DataAssetsLoader",
+			"Enabled": true
+		},
+		{
+			"Name": "GameFeaturePluginsManager",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "MetaCheatManager",
+			"Enabled": true
+		},
+		{
+			"Name": "Mover",
+			"Enabled": true
+		},
+		{
+			"Name": "MyEditorUtils",
+			"Enabled": true
 		}
 	],
 	"ExplicitlyLoaded": true,
