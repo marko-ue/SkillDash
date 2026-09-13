@@ -12,7 +12,6 @@ public class SkillDashRuntime : ModuleRules
 		PublicDependencyModuleNames.AddRange(new[]
 			{
 				"Core"
-				, "GameplayAbilities" // Gameplay Ability System (GAS)
 				// Bomber modules
 				, "MetaCheatManager" // USdCheatExtension
 				, "DataAssetsLoader" // Created USdDataAsset
@@ -23,6 +22,7 @@ public class SkillDashRuntime : ModuleRules
 			{
 				"CoreUObject", "Engine", "Slate", "SlateCore" // Core
 				, "UMG" // UUserWidget creation
+				, "GameplayAbilities" // Gameplay Ability System (GAS)
 				, "GameplayTags" // FGameplayTag
 				, "Mover" // Used for dash impulse
 				// Bomber modules
