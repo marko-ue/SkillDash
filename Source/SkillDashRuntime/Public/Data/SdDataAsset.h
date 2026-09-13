@@ -32,13 +32,19 @@ protected:
 	TObjectPtr<class UBmrInputMappingContext> DashInputContext = nullptr;
 
 	/*********************************************************************************************
-	 * Gameplay Ability System (GAS)
+	 * Dash ability
 	 ********************************************************************************************* */
 public:
 	/** Returns the dash ability class. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE TSubclassOf<class UGameplayAbility> GetDashAbilityClass() const { return DashAbilityClass; }
+	
+protected:
+	/** The dash ability class to grant to the player. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
+	TSubclassOf<UGameplayAbility> DashAbilityClass = nullptr;
 
+public:
 	/** Returns the dash impulse strength. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	float GetDashImpulseStrength() const;
@@ -48,10 +54,6 @@ public:
 	float GetDashCooldownDuration() const;
 
 protected:
-	/** The dash ability class to grant to the player. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
-	TSubclassOf<UGameplayAbility> DashAbilityClass = nullptr;
-
 	/** How strong the dash impulse should be (how far the player gets launched). */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties, ClampMin = "0", ClampMax = "100000"))
 	float DashImpulseStrength = 6000.f;
