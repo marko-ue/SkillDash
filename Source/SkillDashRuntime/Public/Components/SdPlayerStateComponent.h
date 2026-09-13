@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "GameplayAbilitySpecHandle.h"
 
 #include "SdPlayerStateComponent.generated.h"
 
