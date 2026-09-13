@@ -18,6 +18,10 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdPlayerStateComponent)
 
+/*********************************************************************************************
+ * Public functions
+ ********************************************************************************************* */
+
 // Sets default values for this component's properties
 USdPlayerStateComponent::USdPlayerStateComponent()
 {
@@ -111,7 +115,7 @@ void USdPlayerStateComponent::OnDashInputStarted()
  * Overrides
  ********************************************************************************************* */
 
-// Called when the game starts
+// Called when the owning Actor begins play or when the component is created if the Actor has already begun play
 void USdPlayerStateComponent::BeginPlay()
 {
 	Super::BeginPlay();

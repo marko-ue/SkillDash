@@ -8,7 +8,7 @@
 
 /**
  * Represents the Player State in the SkillDash module, where the Owner is Player State actor.
- * Is responsible for granting and removing the Dash ability.
+ * Is responsible for granting and removing the Dash ability, handling its cooldown, and its input.
  */
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SKILLDASHRUNTIME_API USdPlayerStateComponent : public UActorComponent
