@@ -68,8 +68,7 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	// Execute the non replicated gameplay cue for the dash
 	if (ActorInfo->IsLocallyControlled())
 	{
-		FGameplayCueParameters CueParams;
-		CueParams.Location = AvatarPawn->GetActorLocation();
+		const FGameplayCueParameters CueParams;
 		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
 	}
 
