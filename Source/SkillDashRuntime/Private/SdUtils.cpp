@@ -2,7 +2,7 @@
 
 #include "SdUtils.h"
 
-// SkillDash
+// Sd
 #include "Components/SdPlayerStateComponent.h"
 
 // Bomber
