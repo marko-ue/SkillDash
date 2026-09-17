@@ -2,7 +2,6 @@
 
 #pragma once
 
-// Bomber
 #include "MetaCheatManagerExtension.h"
 
 // UE

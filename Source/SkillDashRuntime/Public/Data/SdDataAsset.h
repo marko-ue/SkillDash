@@ -55,10 +55,10 @@ public:
 
 protected:
 	/** How strong the dash impulse should be (how far the player gets launched). */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties, ClampMin = "0", ClampMax = "100000"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dash Settings", meta = (BlueprintProtected, ShowOnlyInnerProperties, ClampMin = "0", ClampMax = "100000"))
 	float DashImpulseStrength = 6000.f;
 
 	/** How long the cooldown of the dash ability lasts. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties, ClampMin = "0.01", ClampMax = "60"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dash Settings", meta = (BlueprintProtected, ShowOnlyInnerProperties, ClampMin = "0.01", ClampMax = "60"))
 	float DashCooldownDuration = 3.5f;
 };
