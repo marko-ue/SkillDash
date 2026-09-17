@@ -7,7 +7,7 @@
 #include "SdDashAbility.generated.h"
 
 /**
- * Handles applying an impulse in the direction of the player forward vector (a dash)
+ * Handles applying an impulse in the direction of the player forward vector if standing still, otherwise in velocity direction
  * Ability is triggered by the SdGameplayTags::Event::DashActivated event
  */
 UCLASS()
