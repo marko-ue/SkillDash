@@ -28,5 +28,6 @@ namespace SdGameplayTags
 	namespace GameplayCue
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashActivation, "GameplayCue.SkillDash.DashActivation", "Local dash SFX played when the dash is activated")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashTrail, "GameplayCue.SkillDash.DashTrail", "Trail for the dash that appears from the original player location to dash location")
 	} // namespace GameplayCue
 } // namespace SdGameplayTags

@@ -19,6 +19,26 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
 
 /*********************************************************************************************
+ * Main methods
+ ********************************************************************************************* */
+
+// Adds the dash trail cue from the player's current location to the target cell, and removes it after a short delay
+void USdDashAbility::HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorInfo)
+{
+	UAbilitySystemComponent* ASC = ActorInfo.AbilitySystemComponent.Get();
+
+	// Add cue, passing in the player location and the target cell's location for moving the Niagara effect from the player location to the target cell location
+	ASC->AddGameplayCue(SdGameplayTags::GameplayCue::DashTrail, ASC->MakeEffectContext());
+
+	// Remove cue after a short delay to allow the trail to move itself to the new location
+	FTimerHandle TrailTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TrailTimerHandle, [ASC]()
+	{
+		ASC->RemoveGameplayCue(SdGameplayTags::GameplayCue::DashTrail);
+	}, 0.2f, false);
+}
+
+/*********************************************************************************************
  * Overrides
  ********************************************************************************************* */
 
@@ -64,6 +84,9 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 
 	// Apply the dash movement effect
 	MoverComp->QueueInstantMovementEffect(DashEffect);
+
+	// The trail cue is added when dashing and is attached to the player, and gets removed after a delay
+	HandleDashTrailCue(*ActorInfo);
 
 	// Execute the non replicated gameplay cue for the dash
 	if (ActorInfo->IsLocallyControlled())

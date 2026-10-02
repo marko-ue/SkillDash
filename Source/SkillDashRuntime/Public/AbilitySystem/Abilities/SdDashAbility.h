@@ -14,6 +14,14 @@ UCLASS()
 class SKILLDASHRUNTIME_API USdDashAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+	
+	/*********************************************************************************************
+	 * Main methods
+	 ********************************************************************************************* */
+protected:
+	/** Adds the dash trail cue from the player's current location to the target cell, and removes it after a short delay. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	void HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorInfo);
 
 	/*********************************************************************************************
 	 * Overrides
