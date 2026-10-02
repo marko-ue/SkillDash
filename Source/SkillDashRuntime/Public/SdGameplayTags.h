@@ -25,11 +25,12 @@ namespace SdGameplayTags
 	namespace SetByCaller
 	{
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashCooldownDuration);
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashInvincibilityDuration);
 	} // namespace SetByCaller
 
 	namespace GameplayCue
 	{
-		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivation)
+		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashActivation);
 		SKILLDASHRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DashTrail);
 	} // namespace GameplayCue
 } // namespace SdGameplayTags

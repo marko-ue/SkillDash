@@ -23,11 +23,12 @@ namespace SdGameplayTags
 	namespace SetByCaller
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashCooldownDuration, "SetByCaller.SkillDash.DashCooldownDuration", "SetByCaller tag to set the cooldown duration of the dash ability");
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashInvincibilityDuration, "SetByCaller.SkillDash.DashInvincibilityDuration", "SetByCaller tag to set how long the invincibility after dashing lasts");
 	} // namespace SetByCaller
 
 	namespace GameplayCue
 	{
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashActivation, "GameplayCue.SkillDash.DashActivation", "Local dash SFX played when the dash is activated")
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashTrail, "GameplayCue.SkillDash.DashTrail", "Trail for the dash that appears from the original player location to dash location")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashActivation, "GameplayCue.SkillDash.DashActivation", "Local dash SFX played when the dash is activated");
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(DashTrail, "GameplayCue.SkillDash.DashTrail", "Trail for the dash that appears from the original player location to dash location");
 	} // namespace GameplayCue
 } // namespace SdGameplayTags

@@ -18,6 +18,9 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SdDashAbility)
 
+// How long invincibility will last (i-frames). Lasts around the time it takes for the dash velocity to be used up
+constexpr float InvincibilityDuration = 0.133f;
+
 /*********************************************************************************************
  * Main methods
  ********************************************************************************************* */
@@ -30,12 +33,28 @@ void USdDashAbility::HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorIn
 	// Add cue, passing in the player location and the target cell's location for moving the Niagara effect from the player location to the target cell location
 	ASC->AddGameplayCue(SdGameplayTags::GameplayCue::DashTrail, ASC->MakeEffectContext());
 
-	// Remove cue after a short delay to allow the trail to move itself to the new location
+	// Remove cue after a short delay to allow the trail to be visible and follow the player
 	FTimerHandle TrailTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TrailTimerHandle, [ASC]()
 	{
 		ASC->RemoveGameplayCue(SdGameplayTags::GameplayCue::DashTrail);
-	}, 0.2f, false);
+	}, 0.25f, false);
+}
+
+// Applies the i-frames GE that applies another GE for blocking incoming damage during the specified invincibility duration
+void USdDashAbility::ApplyDashIFrames(const FGameplayAbilityActorInfo& ActorInfo) const
+{
+	if (ActorInfo.IsNetAuthority())
+	{
+		if (UAbilitySystemComponent* ASC = ActorInfo.AbilitySystemComponent.Get())
+		{
+			checkf(USdDataAsset::Get().GetDashIFramesEffectClass(), TEXT("ERROR: [%i] %hs:\n'DashIFramesEffectClass' is null!"), __LINE__, __FUNCTION__);
+
+			const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(USdDataAsset::Get().GetDashIFramesEffectClass(), GetAbilityLevel(), ASC->MakeEffectContext());
+			SpecHandle.Data->SetSetByCallerMagnitude(SdGameplayTags::SetByCaller::DashInvincibilityDuration, InvincibilityDuration);
+			ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get(), ASC->GetPredictionKeyForNewAction());
+		}
+	}
 }
 
 /*********************************************************************************************
@@ -84,7 +103,10 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 
 	// Apply the dash movement effect
 	MoverComp->QueueInstantMovementEffect(DashEffect);
-
+	
+	// Apply i-frames, so the player can't take damage for a specified duration
+	ApplyDashIFrames(*ActorInfo);
+	
 	// The trail cue is added when dashing and is attached to the player, and gets removed after a delay
 	HandleDashTrailCue(*ActorInfo);
 

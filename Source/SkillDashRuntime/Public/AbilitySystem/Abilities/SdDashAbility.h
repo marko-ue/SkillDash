@@ -22,6 +22,10 @@ protected:
 	/** Adds the dash trail cue from the player's current location to the target cell, and removes it after a short delay. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorInfo);
+	
+	/** Applies the i-frames GE that applies another GE for blocking incoming damage during the specified invincibility duration. */
+	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
+	void ApplyDashIFrames(const FGameplayAbilityActorInfo& ActorInfo) const;
 
 	/*********************************************************************************************
 	 * Overrides
