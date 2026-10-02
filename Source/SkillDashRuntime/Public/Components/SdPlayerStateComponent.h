@@ -46,7 +46,7 @@ public:
 	/** Broadcasts the dash ability activation event when input is started. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void OnDashInputStarted();
-	
+
 	/*********************************************************************************************
 	 * Overrides
 	 ********************************************************************************************* */

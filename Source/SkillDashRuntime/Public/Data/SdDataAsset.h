@@ -38,7 +38,7 @@ public:
 	/** Returns the dash ability class. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE TSubclassOf<class UGameplayAbility> GetDashAbilityClass() const { return DashAbilityClass; }
-	
+
 protected:
 	/** The dash ability class to grant to the player. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (BlueprintProtected, ShowOnlyInnerProperties))
@@ -52,7 +52,7 @@ public:
 	/** Returns the dash ability cooldown duration. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[SkillDash]")
 	float GetDashCooldownDuration() const;
-	
+
 	/** Returns the effect that applies another effect for blocking incoming damage for the specified duration. */
 	UFUNCTION(BlueprintPure, Category = "[SkillDash]")
 	FORCEINLINE TSubclassOf<class UGameplayEffect> GetDashIFramesEffectClass() const { return DashIFramesEffectClass; }
@@ -65,7 +65,7 @@ protected:
 	/** How long the cooldown of the dash ability lasts. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dash Settings", meta = (BlueprintProtected, ShowOnlyInnerProperties, ClampMin = "0.01", ClampMax = "60"))
 	float DashCooldownDuration = 3.5f;
-	
+
 	/** Effect that applies another effect for blocking incoming damage for the specified duration. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gameplay Effects", meta = (BlueprintProtected, ShowOnlyInnerProperties))
 	TSubclassOf<UGameplayEffect> DashIFramesEffectClass = nullptr;

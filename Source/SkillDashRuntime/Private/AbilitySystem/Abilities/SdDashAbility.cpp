@@ -40,7 +40,7 @@ void USdDashAbility::HandleDashCues(const FGameplayAbilityActorInfo& ActorInfo) 
 	{
 		ASC->RemoveGameplayCue(SdGameplayTags::GameplayCue::DashTrail);
 	}, 0.25f, false);
-	
+
 	// Execute a non-replicated cue that plays the dash sound
 	if (ActorInfo.IsLocallyControlled())
 	{
@@ -111,10 +111,10 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 
 	// Apply the dash movement effect with the velocity
 	MoverComp->QueueInstantMovementEffect(DashEffect);
-	
+
 	// Apply i-frames, so the player can't take damage for a specified duration
 	ApplyDashIFrames(*ActorInfo);
-	
+
 	// Adds and removes the trail cue after a delay, and executes the cue for the dash sound
 	HandleDashCues(*ActorInfo);
 

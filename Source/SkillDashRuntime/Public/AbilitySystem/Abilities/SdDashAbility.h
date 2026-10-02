@@ -14,7 +14,7 @@ UCLASS()
 class SKILLDASHRUNTIME_API USdDashAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
-	
+
 	/*********************************************************************************************
 	 * Main methods
 	 ********************************************************************************************* */
@@ -22,7 +22,7 @@ protected:
 	/** Handles adding and removing the trail cue after a delay, and executing a cue for the dash sound. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void HandleDashCues(const FGameplayAbilityActorInfo& ActorInfo) const;
-	
+
 	/** Applies the i-frames GE that applies another GE for blocking incoming damage during the specified invincibility duration. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
 	void ApplyDashIFrames(const FGameplayAbilityActorInfo& ActorInfo) const;
