@@ -19,9 +19,9 @@ class SKILLDASHRUNTIME_API USdDashAbility : public UGameplayAbility
 	 * Main methods
 	 ********************************************************************************************* */
 protected:
-	/** Adds the dash trail cue from the player's current location to the target cell, and removes it after a short delay. */
+	/** Handles adding and removing the trail cue after a delay, and executing a cue for the dash sound. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")
-	void HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorInfo);
+	void HandleDashCues(const FGameplayAbilityActorInfo& ActorInfo) const;
 	
 	/** Applies the i-frames GE that applies another GE for blocking incoming damage during the specified invincibility duration. */
 	UFUNCTION(BlueprintCallable, Category = "[SkillDash]")

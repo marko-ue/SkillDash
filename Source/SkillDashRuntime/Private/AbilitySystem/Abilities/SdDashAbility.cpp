@@ -25,12 +25,12 @@ constexpr float InvincibilityDuration = 0.133f;
  * Main methods
  ********************************************************************************************* */
 
-// Adds the dash trail cue from the player's current location to the target cell, and removes it after a short delay
-void USdDashAbility::HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorInfo)
+// Handles adding and removing the trail cue after a delay, and executing a cue for the dash sound
+void USdDashAbility::HandleDashCues(const FGameplayAbilityActorInfo& ActorInfo) const
 {
 	UAbilitySystemComponent* ASC = ActorInfo.AbilitySystemComponent.Get();
 
-	// Add cue, passing in the player location and the target cell's location for moving the Niagara effect from the player location to the target cell location
+	// Add the cue, which attaches the trail Niagara effect to the player's root component
 	ASC->AddGameplayCue(SdGameplayTags::GameplayCue::DashTrail, ASC->MakeEffectContext());
 
 	// Remove cue after a short delay to allow the trail to be visible and follow the player
@@ -39,6 +39,13 @@ void USdDashAbility::HandleDashTrailCue(const FGameplayAbilityActorInfo& ActorIn
 	{
 		ASC->RemoveGameplayCue(SdGameplayTags::GameplayCue::DashTrail);
 	}, 0.25f, false);
+	
+	// Execute a non-replicated cue that plays the dash sound
+	if (ActorInfo.IsLocallyControlled())
+	{
+		const FGameplayCueParameters CueParams;
+		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo.AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
+	}
 }
 
 // Applies the i-frames GE that applies another GE for blocking incoming damage during the specified invincibility duration
@@ -96,26 +103,19 @@ void USdDashAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 	// Impulse strength retrieved from data asset, dictates how far the player gets launched
 	const float ImpulseStrength = USdDataAsset::Get().GetDashImpulseStrength();
 
-	// Apply the velocity
+	// Store the velocity
 	const TSharedPtr<FApplyVelocityEffect> DashEffect = MakeShared<FApplyVelocityEffect>();
 	DashEffect->VelocityToApply = DashDirection * ImpulseStrength;
 	DashEffect->bAdditiveVelocity = false;
 
-	// Apply the dash movement effect
+	// Apply the dash movement effect with the velocity
 	MoverComp->QueueInstantMovementEffect(DashEffect);
 	
 	// Apply i-frames, so the player can't take damage for a specified duration
 	ApplyDashIFrames(*ActorInfo);
 	
-	// The trail cue is added when dashing and is attached to the player, and gets removed after a delay
-	HandleDashTrailCue(*ActorInfo);
-
-	// Execute the non replicated gameplay cue for the dash
-	if (ActorInfo->IsLocallyControlled())
-	{
-		const FGameplayCueParameters CueParams;
-		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(ActorInfo->AvatarActor.Get(), SdGameplayTags::GameplayCue::DashActivation, CueParams);
-	}
+	// Adds and removes the trail cue after a delay, and executes the cue for the dash sound
+	HandleDashCues(*ActorInfo);
 
 	K2_EndAbility();
 }
